@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="WorkerInfo">
+      <Property name="creationType">com.kuaima.entity.WorkerInfo</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="workerId">
+        <Property name="dataType">String</Property>
+        <Property name="label">师傅编码</Property>
+      </PropertyDef>
+      <PropertyDef name="cityId">
+        <Property name="dataType">String</Property>
+        <Property name="label">所在城市</Property>
+      </PropertyDef>
+      <PropertyDef name="cardName">
+        <Property name="dataType">String</Property>
+        <Property name="label">真实姓名</Property>
+      </PropertyDef>
+      <PropertyDef name="cardId">
+        <Property name="dataType">String</Property>
+        <Property name="label">身份证号</Property>
+      </PropertyDef>
+      <PropertyDef name="cardFrontUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">身份证正面</Property>
+      </PropertyDef>
+      <PropertyDef name="cardBackUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">身份证反面</Property>
+      </PropertyDef>
+      <PropertyDef name="emergencyContactPerson">
+        <Property name="dataType">String</Property>
+        <Property name="label">紧急联系人</Property>
+      </PropertyDef>
+      <PropertyDef name="emergencyContact">
+        <Property name="dataType">String</Property>
+        <Property name="label">紧急联系方式</Property>
+      </PropertyDef>
+      <PropertyDef name="carType">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">汽车类型</Property>
+      </PropertyDef>
+      <PropertyDef name="carImageUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">照片</Property>
+      </PropertyDef>
+      <PropertyDef name="licensePlate">
+        <Property name="dataType">String</Property>
+        <Property name="label">车牌号</Property>
+      </PropertyDef>
+      <PropertyDef name="driversLicenseUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">驾驶证照片</Property>
+      </PropertyDef>
+      <PropertyDef name="drivingLicenseUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">行驶证照片</Property>
+      </PropertyDef>
+      <PropertyDef name="status">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">审核状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;WORKER_APPLY_STATUS&quot;)}</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="payDeposit">
+        <Property name="dataType">String</Property>
+        <Property name="label">是否缴纳保证金</Property>
+      </PropertyDef>
+      <PropertyDef name="deposit">
+        <Property name="dataType">String</Property>
+        <Property name="label">保证金金额</Property>
+      </PropertyDef>
+      <PropertyDef name="depositCode">
+        <Property name="dataType">String</Property>
+        <Property name="label">保证金编码</Property>
+      </PropertyDef>
+      <PropertyDef name="depositName">
+        <Property name="dataType">String</Property>
+        <Property name="label">保证金名称</Property>
+      </PropertyDef>
+      <PropertyDef name="workerPhone">
+        <Property></Property>
+        <Property name="label">手机号</Property>
+      </PropertyDef>
+      <PropertyDef name="registrationTime">
+        <Property name="dataType">Date</Property>
+        <Property name="label">注册时间</Property>
+      </PropertyDef>
+      <PropertyDef name="lastLoginTime">
+        <Property name="dataType">Date</Property>
+        <Property name="label">最后登录时间</Property>
+      </PropertyDef>
+      <PropertyDef name="memberRank">
+        <Property></Property>
+        <Property name="label">会员等级</Property>
+      </PropertyDef>
+      <PropertyDef name="score">
+        <Property></Property>
+        <Property name="label">评分</Property>
+      </PropertyDef>
+      <PropertyDef name="isWorking">
+        <Property></Property>
+        <Property name="label">是否接单</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;IS_WORKING&quot;)}</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="createTime">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="updateTime">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="hasCar">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">有无车辆</Property>
+      </PropertyDef>
+      <PropertyDef name="cityName">
+        <Property/>
+        <Property name="label">所在城市</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Condition">
+      <PropertyDef name="workerId">
+        <Property name="dataType">String</Property>
+        <Property name="label">师傅编码</Property>
+      </PropertyDef>
+      <PropertyDef name="cityId">
+        <Property name="dataType">String</Property>
+        <Property name="label">所在城市</Property>
+      </PropertyDef>
+      <PropertyDef name="cardName">
+        <Property name="dataType">String</Property>
+        <Property name="label">真实姓名</Property>
+      </PropertyDef>
+      <PropertyDef name="cardId">
+        <Property name="dataType">String</Property>
+        <Property name="label">身份证号</Property>
+      </PropertyDef>
+      <PropertyDef name="cardFrontUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">身份证正面</Property>
+      </PropertyDef>
+      <PropertyDef name="cardBackUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">身份证反面</Property>
+      </PropertyDef>
+      <PropertyDef name="emergencyContactPerson">
+        <Property name="dataType">String</Property>
+        <Property name="label">紧急联系人</Property>
+      </PropertyDef>
+      <PropertyDef name="emergencyContact">
+        <Property name="dataType">String</Property>
+        <Property name="label">紧急联系方式</Property>
+      </PropertyDef>
+      <PropertyDef name="carType">
+        <Property name="dataType">String</Property>
+        <Property name="label">汽车类型</Property>
+      </PropertyDef>
+      <PropertyDef name="carImageUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">照片</Property>
+      </PropertyDef>
+      <PropertyDef name="licensePlate">
+        <Property name="dataType">String</Property>
+        <Property name="label">车牌号</Property>
+      </PropertyDef>
+      <PropertyDef name="driversLicenseUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">驾驶证照片</Property>
+      </PropertyDef>
+      <PropertyDef name="drivingLicenseUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">行驶证照片</Property>
+      </PropertyDef>
+      <PropertyDef name="status">
+        <Property name="dataType">String</Property>
+        <Property name="label">审核状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;WORKER_APPLY_STATUS&quot;)}</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="payDeposit">
+        <Property name="dataType">String</Property>
+        <Property name="label">是否缴纳保证金</Property>
+      </PropertyDef>
+      <PropertyDef name="deposit">
+        <Property name="dataType">String</Property>
+        <Property name="label">保证金金额</Property>
+      </PropertyDef>
+      <PropertyDef name="depositCode">
+        <Property name="dataType">String</Property>
+        <Property name="label">保证金编码</Property>
+      </PropertyDef>
+      <PropertyDef name="depositName">
+        <Property name="dataType">String</Property>
+        <Property name="label">保证金名称</Property>
+      </PropertyDef>
+      <PropertyDef name="workerPhone">
+        <Property></Property>
+        <Property name="label">手机号</Property>
+      </PropertyDef>
+      <PropertyDef name="registrationTime">
+        <Property name="dataType">Date</Property>
+        <Property name="label">注册时间</Property>
+      </PropertyDef>
+      <PropertyDef name="lastLoginTime">
+        <Property name="dataType">Date</Property>
+        <Property name="label">最后登录时间</Property>
+      </PropertyDef>
+      <PropertyDef name="memberRank">
+        <Property></Property>
+        <Property name="label">会员等级</Property>
+      </PropertyDef>
+      <PropertyDef name="score">
+        <Property></Property>
+        <Property name="label">评分</Property>
+      </PropertyDef>
+      <PropertyDef name="isWorking">
+        <Property></Property>
+        <Property name="label">是否接单</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <Property name="title">师傅信息信息维护</Property>
+    <DataSet id="dsWorkerInfo">
+      <Property name="dataProvider">workerInfoController#query</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[WorkerInfo]</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <UpdateAction id="updateAction">
+      <Property name="successMessage">保存成功!</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">workerInfoController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsWorkerInfo</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AutoForm id="formCondition">
+      <Property name="labelWidth">100</Property>
+      <Property name="cols">*,*,*,*</Property>
+      <Property name="createPrivateDataSet">true</Property>
+      <Property name="dataType">Condition</Property>
+      <AutoFormElement>
+        <Property name="name">workerId</Property>
+        <Property name="label">师傅编码</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">cityId</Property>
+        <Property name="label">所在城市</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">cardName</Property>
+        <Property name="label">真实姓名</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">cardId</Property>
+        <Property name="label">身份证号</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">emergencyContactPerson</Property>
+        <Property name="label">紧急联系人</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">emergencyContact</Property>
+        <Property name="label">紧急联系方式</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">carType</Property>
+        <Property name="label">汽车类型</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">licensePlate</Property>
+        <Property name="label">车牌号</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">status</Property>
+        <Property name="label">审核状态</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">payDeposit</Property>
+        <Property name="label">是否缴纳保证金</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">deposit</Property>
+        <Property name="label">保证金金额</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">depositCode</Property>
+        <Property name="label">保证金编码</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">depositName</Property>
+        <Property name="label">保证金名称</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">workerPhone</Property>
+        <Property name="property">workerPhone</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">memberRank</Property>
+        <Property name="property">memberRank</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">score</Property>
+        <Property name="property">score</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">isWorking</Property>
+        <Property name="property">isWorking</Property>
+        <Editor/>
+      </AutoFormElement>
+    </AutoForm>
+    <ToolBar>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var data = view.get(&quot;#formCondition.entity&quot;);&#xD;
+with (view.get(&quot;#dsWorkerInfo&quot;)){&#xD;
+set(&quot;parameter&quot;, data);&#xD;
+flushAsync();&#xD;
+}</ClientEvent>
+        <Property name="caption">查询</Property>
+        <Property name="iconClass">fa fa-search</Property>
+      </ToolBarButton>
+      <Separator>
+        <Property name="tip">跳窗编辑</Property>
+      </Separator>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var data=view.get(&quot;#dsWorkerInfo.data&quot;);&#xD;
+if(data.current){&#xD;
+view.id(&quot;dialogWorkerInfo&quot;).show();&#xD;
+}else{&#xD;
+dorado.MessageBox.alert(&quot;当前表没有信息可供编辑!&quot;);&#xD;
+}</ClientEvent>
+        <Property name="caption">查看修改</Property>
+        <Property name="iconClass">fa fa-pencil-square-o</Property>
+      </ToolBarButton>
+      <Separator>
+        <Property name="tip">EXCEL导入</Property>
+      </Separator>
+      <Fill/>
+      <ToolBarButton>
+        <Property name="caption">导出</Property>
+        <Property name="iconClass">fa fa-cloud-download</Property>
+        <Property name="action">exportAction</Property>
+      </ToolBarButton>
+      <DataPilot>
+        <Property name="dataSet">dsWorkerInfo</Property>
+        <Property name="itemCodes">pages,pageSize</Property>
+      </DataPilot>
+    </ToolBar>
+    <DataGrid id="dgWorkerInfo">
+      <Property name="dataSet">dsWorkerInfo</Property>
+      <Property name="dataType">WorkerInfo</Property>
+      <Property name="selectionMode">multiRows</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="stretchColumnsMode">off</Property>
+      <RowSelectorColumn/>
+      <RowNumColumn/>
+      <DataColumn name="师傅编码">
+        <Property name="caption">师傅编码</Property>
+        <Property name="property">workerId</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">workerPhone</Property>
+        <Property name="caption">手机号</Property>
+        <Property name="name">手机号</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">cityName</Property>
+        <Property name="caption">所在城市</Property>
+        <Property name="align">center</Property>
+        <Property name="name">所在城市</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="caption">所在城市</Property>
+        <Property name="property">cityId</Property>
+        <Property name="align">center</Property>
+        <Property name="name">所在城市编码</Property>
+        <Property name="visible">false</Property>
+      </DataColumn>
+      <DataColumn name="真实姓名">
+        <Property name="caption">真实姓名</Property>
+        <Property name="property">cardName</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="身份证号">
+        <Property name="caption">身份证号</Property>
+        <Property name="property">cardId</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="身份证正面">
+        <ClientEvent name="onRenderCell">var url = &quot;https://image-private.kuaimayizhan.com/&quot;;&#xD;
+var suffix = &quot;!kuaima&quot;;&#xD;
+$(arg.dom).empty().xCreate(&#xD;
+			{&#xD;
+				tagName : &quot;IMG&quot;,&#xD;
+				src :url +arg.data.get(&quot;cardFrontUrl&quot;)+suffix,&#xD;
+				//style : &quot;margin: 2px&quot;&#xD;
+				style : &quot;width: 30px; height: 30px; margin: 1px&quot;&#xD;
+			});&#xD;
+&#xD;
+	dorado.TipManager.initTip(arg.dom.parentNode, {&#xD;
+		content : {&#xD;
+			tagName : &quot;IMG&quot;,&#xD;
+			src : url+arg.data.get(&quot;cardFrontUrl&quot;)+suffix,&#xD;
+			style : &quot;width: 256px; height: 256px; margin: 8px&quot;&#xD;
+		},&#xD;
+		arrowDirection : &quot;top&quot;,&#xD;
+		arrowAlign : &quot;left&quot;&#xD;
+	});</ClientEvent>
+        <Property name="caption">身份证正面</Property>
+        <Property name="property">cardFrontUrl</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="身份证反面">
+        <ClientEvent name="onRenderCell">var url = &quot;https://image-private.kuaimayizhan.com/&quot;;&#xD;
+var suffix = &quot;!kuaima&quot;;&#xD;
+$(arg.dom).empty().xCreate(&#xD;
+			{&#xD;
+				tagName : &quot;IMG&quot;,&#xD;
+				src :url +arg.data.get(&quot;cardBackUrl&quot;)+suffix,&#xD;
+				//style : &quot;margin: 2px&quot;&#xD;
+				style : &quot;width: 30px; height: 30px; margin: 1px&quot;&#xD;
+			});&#xD;
+&#xD;
+	dorado.TipManager.initTip(arg.dom.parentNode, {&#xD;
+		content : {&#xD;
+			tagName : &quot;IMG&quot;,&#xD;
+			src : url+arg.data.get(&quot;cardBackUrl&quot;)+suffix,&#xD;
+			style : &quot;width: 256px; height: 256px; margin: 8px&quot;&#xD;
+		},&#xD;
+		arrowDirection : &quot;top&quot;,&#xD;
+		arrowAlign : &quot;left&quot;&#xD;
+	});</ClientEvent>
+        <Property name="caption">身份证反面</Property>
+        <Property name="property">cardBackUrl</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="紧急联系人">
+        <Property name="caption">紧急联系人</Property>
+        <Property name="property">emergencyContactPerson</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="紧急联系方式">
+        <Property name="caption">紧急联系方式</Property>
+        <Property name="property">emergencyContact</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="汽车类型">
+        <Property name="caption">汽车类型</Property>
+        <Property name="property">carType</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="照片">
+        <ClientEvent name="onRenderCell">var url = &quot;https://image-private.kuaimayizhan.com/&quot;;&#xD;
+var suffix = &quot;!kuaima&quot;;&#xD;
+$(arg.dom).empty().xCreate(&#xD;
+			{&#xD;
+				tagName : &quot;IMG&quot;,&#xD;
+				src :url +arg.data.get(&quot;carImageUrl&quot;)+suffix,&#xD;
+				//style : &quot;margin: 2px&quot;&#xD;
+				style : &quot;width: 30px; height: 30px; margin: 1px&quot;&#xD;
+			});&#xD;
+&#xD;
+	dorado.TipManager.initTip(arg.dom.parentNode, {&#xD;
+		content : {&#xD;
+			tagName : &quot;IMG&quot;,&#xD;
+			src : url+arg.data.get(&quot;carImageUrl&quot;)+suffix,&#xD;
+			style : &quot;width: 256px; height: 256px; margin: 8px&quot;&#xD;
+		},&#xD;
+		arrowDirection : &quot;top&quot;,&#xD;
+		arrowAlign : &quot;left&quot;&#xD;
+	});</ClientEvent>
+        <Property name="caption">照片</Property>
+        <Property name="property">carImageUrl</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="车牌号">
+        <Property name="caption">车牌号</Property>
+        <Property name="property">licensePlate</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="驾驶证照片">
+        <ClientEvent name="onRenderCell">var url = &quot;https://image-private.kuaimayizhan.com/&quot;;&#xD;
+var suffix = &quot;!kuaima&quot;;&#xD;
+$(arg.dom).empty().xCreate(&#xD;
+			{&#xD;
+				tagName : &quot;IMG&quot;,&#xD;
+				src :url +arg.data.get(&quot;driversLicenseUrl&quot;)+suffix,&#xD;
+				//style : &quot;margin: 2px&quot;&#xD;
+				style : &quot;width: 30px; height: 30px; margin: 1px&quot;&#xD;
+			});&#xD;
+&#xD;
+	dorado.TipManager.initTip(arg.dom.parentNode, {&#xD;
+		content : {&#xD;
+			tagName : &quot;IMG&quot;,&#xD;
+			src : url+arg.data.get(&quot;driversLicenseUrl&quot;)+suffix,&#xD;
+			style : &quot;width: 256px; height: 256px; margin: 8px&quot;&#xD;
+		},&#xD;
+		arrowDirection : &quot;top&quot;,&#xD;
+		arrowAlign : &quot;left&quot;&#xD;
+	});</ClientEvent>
+        <Property name="caption">驾驶证照片</Property>
+        <Property name="property">driversLicenseUrl</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="行驶证照片">
+        <ClientEvent name="onRenderCell">var url = &quot;https://image-private.kuaimayizhan.com/&quot;;&#xD;
+var suffix = &quot;!kuaima&quot;;&#xD;
+$(arg.dom).empty().xCreate(&#xD;
+			{&#xD;
+				tagName : &quot;IMG&quot;,&#xD;
+				src :url +arg.data.get(&quot;drivingLicenseUrl&quot;)+suffix,&#xD;
+				//style : &quot;margin: 2px&quot;&#xD;
+				style : &quot;width: 30px; height: 30px; margin: 1px&quot;&#xD;
+			});&#xD;
+&#xD;
+	dorado.TipManager.initTip(arg.dom.parentNode, {&#xD;
+		content : {&#xD;
+			tagName : &quot;IMG&quot;,&#xD;
+			src : url+arg.data.get(&quot;drivingLicenseUrl&quot;)+suffix,&#xD;
+			style : &quot;width: 256px; height: 256px; margin: 8px&quot;&#xD;
+		},&#xD;
+		arrowDirection : &quot;top&quot;,&#xD;
+		arrowAlign : &quot;left&quot;&#xD;
+	});</ClientEvent>
+        <Property name="caption">行驶证照片</Property>
+        <Property name="property">drivingLicenseUrl</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="审核状态">
+        <Property name="caption">审核状态</Property>
+        <Property name="property">status</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="是否缴纳保证金">
+        <Property name="caption">是否缴纳保证金</Property>
+        <Property name="property">payDeposit</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="保证金金额">
+        <Property name="caption">保证金金额</Property>
+        <Property name="property">deposit</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="保证金编码">
+        <Property name="caption">保证金编码</Property>
+        <Property name="property">depositCode</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="保证金名称">
+        <Property name="caption">保证金名称</Property>
+        <Property name="property">depositName</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">registrationTime</Property>
+        <Property name="caption">注册时间</Property>
+        <Property name="name">注册时间</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">lastLoginTime</Property>
+        <Property name="caption">最后登录时间</Property>
+        <Property name="name">最后登录时间</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">memberRank</Property>
+        <Property name="caption">会员等级</Property>
+        <Property name="name">会员等级</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">score</Property>
+        <Property name="caption">评分</Property>
+        <Property name="name">评分</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">isWorking</Property>
+        <Property name="caption">是否接单</Property>
+        <Property name="name">是否接单</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="dialogWorkerInfo">
+      <ClientEvent name="onClose">var data=view.id(&quot;dsWorkerInfo&quot;).getData();&#xD;
+data.cancel();&#xD;
+</ClientEvent>
+      <ClientEvent name="onShow">var url = &quot;https://image-private.kuaimayizhan.com/&quot;;&#xD;
+var suffix = &quot;!kuaima&quot;;&#xD;
+var entity = view.get(&quot;#workerForm.entity&quot;)&#xD;
+var cardFrontUrl = url +entity.get(&quot;cardFrontUrl&quot;)+suffix;&#xD;
+view.get(&quot;#img1&quot;).set(&quot;blankImage&quot;,cardFrontUrl);&#xD;
+var cardBackUrl = url +entity.get(&quot;cardBackUrl&quot;)+suffix;&#xD;
+view.get(&quot;#img2&quot;).set(&quot;blankImage&quot;,cardBackUrl);&#xD;
+var carImageUrl = url +entity.get(&quot;carImageUrl&quot;)+suffix;&#xD;
+view.get(&quot;#img3&quot;).set(&quot;blankImage&quot;,carImageUrl);&#xD;
+var driversLicenseUrl = url +entity.get(&quot;driversLicenseUrl&quot;)+suffix;&#xD;
+view.get(&quot;#img4&quot;).set(&quot;blankImage&quot;,driversLicenseUrl);&#xD;
+var drivingLicenseUrl = url +entity.get(&quot;drivingLicenseUrl&quot;)+suffix;&#xD;
+view.get(&quot;#img5&quot;).set(&quot;blankImage&quot;,drivingLicenseUrl);&#xD;
+</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="closeable">true</Property>
+      <Property name="caption">数据编辑</Property>
+      <Property name="height">99%</Property>
+      <Property name="width">99%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var data=view.id(&quot;dsWorkerInfo&quot;).getData();&#xD;
+var dialog=view.id(&quot;dialogWorkerInfo&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要取消当前操作吗？&quot;,function(){&#xD;
+data.cancel();&#xD;
+dialog.hide();&#xD;
+});</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-share</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dialog=view.id(&quot;dialogWorkerInfo&quot;);&#xD;
+var action=view.id(&quot;updateAction&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;,function(){&#xD;
+action.execute(function(){&#xD;
+dialog.hide();&#xD;
+view.get(&quot;#dsWorkerInfo&quot;).flushAsync(); &#xD;
+view.get(&quot;#refreshCacheAction&quot;).execute(function(){ &#xD;
+});&#xD;
+});&#xD;
+})</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check-circle</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="workerForm">
+          <Property name="labelWidth">100</Property>
+          <Property name="dataSet">dsWorkerInfo</Property>
+          <Property name="cols">*,*</Property>
+          <AutoFormElement name="workerId">
+            <Property name="name">workerId</Property>
+            <Property name="property">workerId</Property>
+            <Property name="label">师傅编码</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="cityId">
+            <Property name="name">cityId</Property>
+            <Property name="property">cityId</Property>
+            <Property name="label">所在城市</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="cardName">
+            <Property name="name">cardName</Property>
+            <Property name="property">cardName</Property>
+            <Property name="label">真实姓名</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="cardId">
+            <Property name="name">cardId</Property>
+            <Property name="property">cardId</Property>
+            <Property name="label">身份证号</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="cardFrontUrl">
+            <Property name="name">cardFrontUrl</Property>
+            <Property name="property">cardFrontUrl</Property>
+            <Property name="label">身份证正面</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <Image id="img1">
+            <ClientEvent name="onDoubleClick">var dialogImageShow = view.get(&quot;#dialogImageShow&quot;);&#xD;
+var url = view.get(&quot;#img1&quot;).get(&quot;blankImage&quot;);&#xD;
+view.get(&quot;#ImageShowTable&quot;).set(&quot;blankImage&quot;,url);&#xD;
+dialogImageShow.show();</ClientEvent>
+            <Property name="width">100</Property>
+            <Property name="height">100</Property>
+          </Image>
+          <AutoFormElement name="cardBackUrl">
+            <Property name="name">cardBackUrl</Property>
+            <Property name="property">cardBackUrl</Property>
+            <Property name="label">身份证反面</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <Image id="img2">
+            <ClientEvent name="onDoubleClick">var dialogImageShow = view.get(&quot;#dialogImageShow&quot;);&#xD;
+var url = view.get(&quot;#img2&quot;).get(&quot;blankImage&quot;);&#xD;
+view.get(&quot;#ImageShowTable&quot;).set(&quot;blankImage&quot;,url);&#xD;
+dialogImageShow.show();</ClientEvent>
+            <Property name="width">100</Property>
+            <Property name="height">100</Property>
+          </Image>
+          <AutoFormElement name="emergencyContactPerson">
+            <Property name="name">emergencyContactPerson</Property>
+            <Property name="property">emergencyContactPerson</Property>
+            <Property name="label">紧急联系人</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="emergencyContact">
+            <Property name="name">emergencyContact</Property>
+            <Property name="property">emergencyContact</Property>
+            <Property name="label">紧急联系方式</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="carType">
+            <Property name="name">carType</Property>
+            <Property name="property">carType</Property>
+            <Property name="label">汽车类型</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="licensePlate">
+            <Property name="name">licensePlate</Property>
+            <Property name="property">licensePlate</Property>
+            <Property name="label">车牌号</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="carImageUrl">
+            <Property name="name">carImageUrl</Property>
+            <Property name="property">carImageUrl</Property>
+            <Property name="label">照片</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <Image id="img3">
+            <ClientEvent name="onDoubleClick">var dialogImageShow = view.get(&quot;#dialogImageShow&quot;);&#xD;
+var url = view.get(&quot;#img3&quot;).get(&quot;blankImage&quot;);&#xD;
+view.get(&quot;#ImageShowTable&quot;).set(&quot;blankImage&quot;,url);&#xD;
+dialogImageShow.show();</ClientEvent>
+            <Property name="width">100</Property>
+            <Property name="height">100</Property>
+          </Image>
+          <AutoFormElement name="driversLicenseUrl">
+            <Property name="name">driversLicenseUrl</Property>
+            <Property name="property">driversLicenseUrl</Property>
+            <Property name="label">驾驶证照片</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <Image id="img4">
+            <ClientEvent name="onDoubleClick">var dialogImageShow = view.get(&quot;#dialogImageShow&quot;);&#xD;
+var url = view.get(&quot;#img4&quot;).get(&quot;blankImage&quot;);&#xD;
+view.get(&quot;#ImageShowTable&quot;).set(&quot;blankImage&quot;,url);&#xD;
+dialogImageShow.show();</ClientEvent>
+            <Property name="width">100</Property>
+            <Property name="height">100</Property>
+          </Image>
+          <AutoFormElement name="drivingLicenseUrl">
+            <Property name="name">drivingLicenseUrl</Property>
+            <Property name="property">drivingLicenseUrl</Property>
+            <Property name="label">行驶证照片</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <Image id="img5">
+            <ClientEvent name="onDoubleClick">var dialogImageShow = view.get(&quot;#dialogImageShow&quot;);&#xD;
+var url = view.get(&quot;#img5&quot;).get(&quot;blankImage&quot;);&#xD;
+view.get(&quot;#ImageShowTable&quot;).set(&quot;blankImage&quot;,url);&#xD;
+dialogImageShow.show();</ClientEvent>
+            <Property name="width">100</Property>
+            <Property name="height">100</Property>
+          </Image>
+          <AutoFormElement name="payDeposit">
+            <Property name="name">payDeposit</Property>
+            <Property name="property">payDeposit</Property>
+            <Property name="label">是否缴纳保证金</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="deposit">
+            <Property name="name">deposit</Property>
+            <Property name="property">deposit</Property>
+            <Property name="label">保证金金额</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="depositCode">
+            <Property name="name">depositCode</Property>
+            <Property name="property">depositCode</Property>
+            <Property name="label">保证金编码</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="depositName">
+            <Property name="name">depositName</Property>
+            <Property name="property">depositName</Property>
+            <Property name="label">保证金名称</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="status">
+            <Property name="name">status</Property>
+            <Property name="property">status</Property>
+            <Property name="label">审核状态</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Export2ReportAction id="exportAction">
+      <Property name="template">dgWorkerInfo</Property>
+      <Property name="dataScope">serverAll</Property>
+      <Property name="executingMessage">正在导出……</Property>
+      <Property name="successMessage">数据导出成功。</Property>
+      <Property name="extension">xlsx</Property>
+      <Property name="maxSize">10000</Property>
+      <Property name="fileName">师傅信息</Property>
+    </Export2ReportAction>
+    <Dialog id="dialogImageShow">
+      <Property name="height">90%</Property>
+      <Property name="width">60%</Property>
+      <Buttons/>
+      <Children>
+        <Image id="ImageShowTable">
+          <Property name="width">700</Property>
+          <Property name="height">500</Property>
+        </Image>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

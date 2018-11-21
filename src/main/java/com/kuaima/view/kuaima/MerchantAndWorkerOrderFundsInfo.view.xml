@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="MerchantOrderInfo">
+      <Property name="creationType">com.kuaima.entity.MerchantOrderInfo</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="orderAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">订单资金</Property>
+      </PropertyDef>
+      <PropertyDef name="serviceCommdityAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">服务商品金额</Property>
+      </PropertyDef>
+      <PropertyDef name="installAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">安装金额</Property>
+      </PropertyDef>
+      <PropertyDef name="distributionAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">配送金额</Property>
+      </PropertyDef>
+      <PropertyDef name="totalAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">总金额</Property>
+      </PropertyDef>
+      <PropertyDef name="centerLongitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">中心位置经度</Property>
+      </PropertyDef>
+      <PropertyDef name="centerLatitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">中心位置维度</Property>
+      </PropertyDef>
+      <PropertyDef name="distributionLongitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">配送位置经度</Property>
+      </PropertyDef>
+      <PropertyDef name="distributionLatitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">配送位置维度</Property>
+      </PropertyDef>
+      <PropertyDef name="initKm">
+        <Property name="dataType">String</Property>
+        <Property name="label">初始公里数</Property>
+      </PropertyDef>
+      <PropertyDef name="initKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">初始公里费用</Property>
+      </PropertyDef>
+      <PropertyDef name="perKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">每公里单价</Property>
+      </PropertyDef>
+      <PropertyDef name="perKmAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">每公里费用</Property>
+      </PropertyDef>
+      <PropertyDef name="workerInstallAmount">
+        <Property></Property>
+        <Property name="label">师傅安装收入</Property>
+      </PropertyDef>
+      <PropertyDef name="workerDistributionAmount">
+        <Property></Property>
+        <Property name="label">师傅运费收入</Property>
+      </PropertyDef>
+      <PropertyDef name="workerInitPrice">
+        <Property></Property>
+        <Property name="label">师傅初始运费</Property>
+      </PropertyDef>
+      <PropertyDef name="workerPerKmPrice">
+        <Property></Property>
+        <Property name="label">实付每公里费用</Property>
+      </PropertyDef>
+      <PropertyDef name="distance">
+        <Property></Property>
+        <Property name="label">距离</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">创建时间</Property>
+      </PropertyDef>
+      <PropertyDef name="updateDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="orderId">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="creater">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="updater">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="merchantCode">
+        <Property/>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Condition">
+      <PropertyDef name="orderAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">订单资金</Property>
+      </PropertyDef>
+      <PropertyDef name="serviceCommdityAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">服务商品金额</Property>
+      </PropertyDef>
+      <PropertyDef name="installAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">安装金额</Property>
+      </PropertyDef>
+      <PropertyDef name="distributionAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">配送金额</Property>
+      </PropertyDef>
+      <PropertyDef name="totalAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">总金额</Property>
+      </PropertyDef>
+      <PropertyDef name="orderNo">
+        <Property name="dataType">String</Property>
+        <Property name="label">ToB订单编码</Property>
+      </PropertyDef>
+      <PropertyDef name="centerLongitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">中心位置经度</Property>
+      </PropertyDef>
+      <PropertyDef name="centerLatitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">中心位置维度</Property>
+      </PropertyDef>
+      <PropertyDef name="distributionLongitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">配送位置经度</Property>
+      </PropertyDef>
+      <PropertyDef name="distributionLatitude">
+        <Property name="dataType">String</Property>
+        <Property name="label">配送位置维度</Property>
+      </PropertyDef>
+      <PropertyDef name="initKm">
+        <Property name="dataType">String</Property>
+        <Property name="label">初始公里数</Property>
+      </PropertyDef>
+      <PropertyDef name="initKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">初始公里费用</Property>
+      </PropertyDef>
+      <PropertyDef name="perKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">每公里单价</Property>
+      </PropertyDef>
+      <PropertyDef name="perKmAmount">
+        <Property name="dataType">String</Property>
+        <Property name="label">每公里费用</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <Property name="title">商家订单信息信息维护</Property>
+    <DataSet id="dsMerchantOrderInfo">
+      <Property name="dataProvider">merchantAndWorkerOrderInfoController#query</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[MerchantOrderInfo]</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <UpdateAction id="updateAction">
+      <Property name="successMessage">保存成功!</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">merchantOrderInfoController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsMerchantOrderInfo</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AutoForm id="formCondition">
+      <Property name="labelWidth">100</Property>
+      <Property name="cols">*,*,*,*</Property>
+      <Property name="createPrivateDataSet">true</Property>
+      <Property name="dataType">Condition</Property>
+      <AutoFormElement>
+        <Property name="name">orderAmount</Property>
+        <Property name="label">订单资金</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">serviceCommdityAmount</Property>
+        <Property name="label">服务商品金额</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">installAmount</Property>
+        <Property name="label">安装金额</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">distributionAmount</Property>
+        <Property name="label">配送金额</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">totalAmount</Property>
+        <Property name="label">总金额</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">centerLongitude</Property>
+        <Property name="label">中心位置经度</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">centerLatitude</Property>
+        <Property name="label">中心位置维度</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">distributionLongitude</Property>
+        <Property name="label">配送位置经度</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">distributionLatitude</Property>
+        <Property name="label">配送位置维度</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">initKm</Property>
+        <Property name="label">初始公里数</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">initKmPrice</Property>
+        <Property name="label">初始公里费用</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">perKmPrice</Property>
+        <Property name="label">每公里单价</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">perKmAmount</Property>
+        <Property name="label">每公里费用</Property>
+        <Editor/>
+      </AutoFormElement>
+    </AutoForm>
+    <ToolBar>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var data = view.get(&quot;#formCondition.entity&quot;);&#xD;
+with (view.get(&quot;#dsMerchantOrderInfo&quot;)){&#xD;
+set(&quot;parameter&quot;, data);&#xD;
+flushAsync();&#xD;
+}</ClientEvent>
+        <Property name="caption">查询</Property>
+        <Property name="iconClass">fa fa-search</Property>
+      </ToolBarButton>
+      <Separator>
+        <Property name="tip">跳窗编辑</Property>
+      </Separator>
+      <Fill/>
+      <ToolBarButton>
+        <Property name="caption">导出</Property>
+        <Property name="iconClass">fa fa-cloud-download</Property>
+        <Property name="action">exportAction</Property>
+      </ToolBarButton>
+      <DataPilot>
+        <Property name="dataSet">dsMerchantOrderInfo</Property>
+        <Property name="itemCodes">pages,pageSize</Property>
+      </DataPilot>
+    </ToolBar>
+    <DataGrid id="dgMerchantOrderInfo">
+      <Property name="dataSet">dsMerchantOrderInfo</Property>
+      <Property name="dataType">MerchantOrderInfo</Property>
+      <Property name="selectionMode">multiRows</Property>
+      <Property name="readOnly">true</Property>
+      <RowSelectorColumn/>
+      <RowNumColumn/>
+      <DataColumn name="orderId">
+        <Property name="property">orderId</Property>
+        <Property name="align">center</Property>
+        <Property name="caption">订单ID</Property>
+      </DataColumn>
+      <DataColumn name="订单资金">
+        <Property name="caption">订单资金</Property>
+        <Property name="property">orderAmount</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="服务商品金额">
+        <Property name="caption">服务商品金额</Property>
+        <Property name="property">serviceCommdityAmount</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="安装金额">
+        <Property name="caption">安装金额</Property>
+        <Property name="property">installAmount</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="配送金额">
+        <Property name="caption">配送金额</Property>
+        <Property name="property">distributionAmount</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="总金额">
+        <Property name="caption">总金额</Property>
+        <Property name="property">totalAmount</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="中心位置经度">
+        <Property name="caption">中心位置经度</Property>
+        <Property name="property">centerLongitude</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="中心位置维度">
+        <Property name="caption">中心位置维度</Property>
+        <Property name="property">centerLatitude</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="配送位置经度">
+        <Property name="caption">配送位置经度</Property>
+        <Property name="property">distributionLongitude</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="配送位置维度">
+        <Property name="caption">配送位置维度</Property>
+        <Property name="property">distributionLatitude</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="初始公里数">
+        <Property name="caption">初始公里数</Property>
+        <Property name="property">initKm</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="初始公里费用">
+        <Property name="caption">初始公里费用</Property>
+        <Property name="property">initKmPrice</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="每公里单价">
+        <Property name="caption">每公里单价</Property>
+        <Property name="property">perKmPrice</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="每公里费用">
+        <Property name="caption">每公里费用</Property>
+        <Property name="property">perKmAmount</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="workerInstallAmount">
+        <Property name="property">workerInstallAmount</Property>
+      </DataColumn>
+      <DataColumn name="workerDistributionAmount">
+        <Property name="property">workerDistributionAmount</Property>
+      </DataColumn>
+      <DataColumn name="workerInitPrice">
+        <Property name="property">workerInitPrice</Property>
+      </DataColumn>
+      <DataColumn name="workerPerKmPrice">
+        <Property name="property">workerPerKmPrice</Property>
+      </DataColumn>
+      <DataColumn name="distance">
+        <Property name="property">distance</Property>
+      </DataColumn>
+      <DataColumn name="createDate">
+        <Property name="property">createDate</Property>
+      </DataColumn>
+    </DataGrid>
+    <Export2ReportAction id="exportAction">
+      <Property name="template">dgMerchantOrderInfo</Property>
+      <Property name="dataScope">serverAll</Property>
+      <Property name="executingMessage">正在导出……</Property>
+      <Property name="successMessage">数据导出成功。</Property>
+      <Property name="extension">xlsx</Property>
+      <Property name="maxSize">10000</Property>
+      <Property name="fileName">商家订单信息</Property>
+    </Export2ReportAction>
+  </View>
+</ViewConfig>

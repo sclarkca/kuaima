@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="User">
+      <Property name="creationType">com.bstek.bdf3.security.orm.User</Property>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">用户名</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="nickname">
+        <Property></Property>
+        <Property name="label">昵称</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property></Property>
+        <Property name="label">密码</Property>
+        <Property name="required">true</Property>
+        <Validator type="charLength">
+          <Property name="minLength">6</Property>
+          <Property name="name">validator</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="accountNonExpired">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">账户未过期</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonLocked">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">账户未锁定</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="credentialsNonExpired">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">证书未过期</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可用</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="administrator">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">是管理员</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="PostStationGrantedAuthority">
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="actorId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="postId">
+        <Property></Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="PostStation">
+      <Property name="creationType">com.kuaima.entity.PostStation</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="postStationCode">
+        <Property name="dataType">String</Property>
+        <Property name="label">驿站编码</Property>
+      </PropertyDef>
+      <PropertyDef name="postStationName">
+        <Property name="dataType">String</Property>
+        <Property name="label">驿站名称</Property>
+      </PropertyDef>
+      <PropertyDef name="head">
+        <Property name="dataType">String</Property>
+        <Property name="label">负责人姓名</Property>
+      </PropertyDef>
+      <PropertyDef name="headPhone">
+        <Property name="dataType">String</Property>
+        <Property name="label">负责人手机号</Property>
+      </PropertyDef>
+      <PropertyDef name="province">
+        <Property name="dataType">String</Property>
+        <Property name="label">省</Property>
+      </PropertyDef>
+      <PropertyDef name="provinceName">
+        <Property name="dataType">String</Property>
+        <Property name="label">省</Property>
+      </PropertyDef>
+      <PropertyDef name="city">
+        <Property name="dataType">String</Property>
+        <Property name="label">市</Property>
+      </PropertyDef>
+      <PropertyDef name="cityName">
+        <Property name="dataType">String</Property>
+        <Property name="label">市</Property>
+      </PropertyDef>
+      <PropertyDef name="region">
+        <Property name="dataType">String</Property>
+        <Property name="label">区县</Property>
+      </PropertyDef>
+      <PropertyDef name="regionName">
+        <Property name="dataType">String</Property>
+        <Property name="label">区县</Property>
+      </PropertyDef>
+      <PropertyDef name="town">
+        <Property name="dataType">String</Property>
+        <Property name="label">镇</Property>
+      </PropertyDef>
+      <PropertyDef name="address">
+        <Property name="dataType">String</Property>
+        <Property name="label">详细地址</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="creater">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="updateDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="updater">
+        <Property></Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View layout="padding:5;regionPadding:10">
+    <Property name="packages">font-awesome-new,colors</Property>
+    <DataSet id="dsUsersWithOut">
+      <Property name="dataType">[User]</Property>
+      <Property name="dataProvider">postStationAssignmentService#loadUsersWithout</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsUsersWithIn">
+      <Property name="dataType">[User]</Property>
+      <Property name="dataProvider">postStationAssignmentService#loadUsersWithin</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsPostStation">
+      <Property name="dataProvider">postStationController#query</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[PostStation]</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <Panel layout="padding:5;regionPadding:10" layoutConstraint="left">
+      <Property name="caption">驿站</Property>
+      <Property name="width">400</Property>
+      <Buttons/>
+      <Children>
+        <ToolBar>
+          <TextEditor>
+            <ClientEvent name="onKeyDown" signature="self,arg,dgPostStation">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		dgUser.filter();
+	} else {
+		dgPostStation.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;postStationCode&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;postStationName&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+            <Property name="trigger">triggerClear</Property>
+            <Property name="blankText">按角色名或描述</Property>
+          </TextEditor>
+        </ToolBar>
+        <DataGrid id="dgPostStation">
+          <ClientEvent name="onClick">var dgPostStationCurrent = view.get(&quot;#dgPostStation&quot;).getCurrentItem();&#xD;
+var data = dgPostStationCurrent.getData();&#xD;
+var parameter = {&#xD;
+	&quot;parameter&quot;:data.id&#xD;
+};&#xD;
+console.log(&quot;onclick触发&quot;)&#xD;
+with (view.get(&quot;#dsUsersWithIn&quot;)) {&#xD;
+    set(&quot;parameter&quot;, parameter);&#xD;
+    flushAsync();&#xD;
+}</ClientEvent>
+          <ClientEvent name="onRenderRow">var dgPostStationCurrent = view.get(&quot;#dgPostStation&quot;).getCurrentItem();&#xD;
+var data = dgPostStationCurrent.getData();&#xD;
+var parameter = {&#xD;
+	&quot;parameter&quot;:data.id&#xD;
+};&#xD;
+console.log(&quot;onclick触发&quot;)&#xD;
+with (view.get(&quot;#dsUsersWithIn&quot;)) {&#xD;
+    set(&quot;parameter&quot;, parameter);&#xD;
+    flushAsync();&#xD;
+}</ClientEvent>
+          <Property name="dataSet">dsPostStation</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="sortMode">serverSide</Property>
+          <Property name="filterMode">serverSide</Property>
+          <RowNumColumn/>
+          <DataColumn name="postStationCode">
+            <Property name="property">postStationCode</Property>
+          </DataColumn>
+          <DataColumn name="postStationName">
+            <Property name="property">postStationName</Property>
+          </DataColumn>
+        </DataGrid>
+        <ToolBar layoutConstraint="bottom">
+          <DataPilot>
+            <Property name="dataSet">dsPostStation</Property>
+            <Property name="itemCodes">|&lt;,&lt;</Property>
+          </DataPilot>
+          <Fill/>
+          <DataPilot>
+            <Property name="dataSet">dsPostStation</Property>
+            <Property name="itemCodes">>,>|</Property>
+          </DataPilot>
+        </ToolBar>
+      </Children>
+      <Tools/>
+    </Panel>
+    <Panel>
+      <Property name="caption">成员分配</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="padding:5;regionPadding:10" layoutConstraint="left">
+          <Property name="width">45%</Property>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">未分配用户</Property>
+              <Property name="exClassName">blue-text</Property>
+            </ToolBarLabel>
+            <Fill/>
+            <TextEditor>
+              <ClientEvent name="onKeyDown" signature="self,arg,userSource">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		userSource.filter();
+	} else {
+		userSource.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;username&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;nickname&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+              <Property name="trigger">triggerClear</Property>
+              <Property name="blankText">按用户名或昵称</Property>
+            </TextEditor>
+          </ToolBar>
+          <DataGrid id="userSource">
+            <Property name="dataSet">dsUsersWithOut</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">serverSide</Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="selectionMode">multiRows</Property>
+            <RowSelectorColumn/>
+            <RowNumColumn/>
+            <DataColumn name="username">
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">nickname</Property>
+              <Property name="name">nickname</Property>
+            </DataColumn>
+          </DataGrid>
+          <ToolBar layoutConstraint="bottom">
+            <DataPilot>
+              <Property name="dataSet">dsUsersWithOut</Property>
+              <Property name="itemCodes">|&lt;,&lt;</Property>
+            </DataPilot>
+            <Fill/>
+            <DataPilot>
+              <Property name="dataSet">dsUsersWithOut</Property>
+              <Property name="itemCodes">>,>|</Property>
+            </DataPilot>
+          </ToolBar>
+        </Container>
+        <Container layout="vbox pack:center;align:center" layoutConstraint="left">
+          <Property name="width">10%</Property>
+          <Property name="style">
+            <Property name="background-color">#ededed</Property>
+          </Property>
+          <Button>
+            <ClientEvent name="onClick">var dgPostStationCurrent = view.get(&quot;#dgPostStation&quot;).getCurrentItem();&#xD;
+var userSourceSelection = view.get(&quot;#userSource&quot;).get(&quot;selection&quot;);&#xD;
+if (!userSourceSelection || 0 == userSourceSelection.length){&#xD;
+	dorado.MessageBox.alert(&quot;请选择需要绑定的用户！&quot;);&#xD;
+	return&#xD;
+};&#xD;
+// 绑定&#xD;
+var parameter ={&#xD;
+	'dgPostStationCurrent':dgPostStationCurrent,&#xD;
+	'userSourceSelection':userSourceSelection&#xD;
+};&#xD;
+var action = view.get(&quot;#updatePostStationAction&quot;);&#xD;
+action.set(&quot;parameter&quot;,parameter).execute(function(result){&#xD;
+	if (result){&#xD;
+		dorado.widget.NotifyTipManager.notify('绑定成功');&#xD;
+		view.get(&quot;#dsUsersWithIn&quot;).flushAsync();&#xD;
+		view.get(&quot;#dsUsersWithOut&quot;).flushAsync();&#xD;
+	} else {&#xD;
+		dorado.widget.NotifyTipManager.notify('绑定失败,请重试');&#xD;
+		view.get(&quot;#dsUsersWithIn&quot;).flushAsync();&#xD;
+		view.get(&quot;#dsUsersWithOut&quot;).flushAsync();&#xD;
+	}&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="caption">添加</Property>
+            <Property name="action">actionAddUser</Property>
+          </Button>
+          <Button>
+            <ClientEvent name="onClick">var userTargets = view.get(&quot;#userTarget&quot;).get(&quot;selection&quot;);&#xD;
+if (!userTargets || 0 == userTargets.length){&#xD;
+	dorado.MessageBox.alert(&quot;请选择需要移除的用户！&quot;);&#xD;
+	return&#xD;
+};&#xD;
+var parameter ={&#xD;
+	'userTargets':userTargets&#xD;
+};&#xD;
+var action = view.get(&quot;#deleteUserAction&quot;);&#xD;
+action.set(&quot;parameter&quot;,parameter).execute(function(result){&#xD;
+	if (result){&#xD;
+		dorado.widget.NotifyTipManager.notify('解绑成功');&#xD;
+		view.get(&quot;#dsUsersWithIn&quot;).flushAsync();&#xD;
+		view.get(&quot;#dsUsersWithOut&quot;).flushAsync();&#xD;
+	} else {&#xD;
+		dorado.widget.NotifyTipManager.notify('解绑失败,请重试');&#xD;
+		view.get(&quot;#dsUsersWithIn&quot;).flushAsync();&#xD;
+		view.get(&quot;#dsUsersWithOut&quot;).flushAsync();&#xD;
+	}&#xD;
+});&#xD;
+</ClientEvent>
+            <Property name="caption">移除</Property>
+            <Property name="action">actionRemoveUser</Property>
+          </Button>
+        </Container>
+        <Container layout="padding:5;regionPadding:10" layoutConstraint="left">
+          <Property name="width">45%</Property>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">已分配用户</Property>
+              <Property name="exClassName">green-text</Property>
+            </ToolBarLabel>
+            <Fill/>
+            <TextEditor>
+              <ClientEvent name="onKeyDown" signature="self,arg,userTarget">if (arg.keyCode === 13) {
+	return;
+}
+window.clearTimeout(self.urlQueryTimeout);
+self.urlQueryTimeout = window.setTimeout(function() {
+	var key = self.get(&quot;value&quot;);
+	if (!key) {
+		userTarget.filter();
+	} else {
+		userTarget.filter([{
+			junction: &quot;or&quot;,
+			criterions: [{
+				property: &quot;username&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}, {
+				property: &quot;nickname&quot;,
+				operator: &quot;like&quot;,
+				value: key
+			}]
+		}]);
+	}
+}, 250);</ClientEvent>
+              <Property name="trigger">triggerClear</Property>
+              <Property name="blankText">按用户名或昵称</Property>
+            </TextEditor>
+          </ToolBar>
+          <DataGrid id="userTarget">
+            <Property name="dataSet">dsUsersWithIn</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="sortMode">serverSide</Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="selectionMode">multiRows</Property>
+            <RowSelectorColumn/>
+            <RowNumColumn/>
+            <DataColumn name="username">
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">nickname</Property>
+              <Property name="name">nickname</Property>
+            </DataColumn>
+          </DataGrid>
+          <ToolBar layoutConstraint="bottom">
+            <DataPilot>
+              <Property name="dataSet">dsUsersWithIn</Property>
+              <Property name="itemCodes">|&lt;,&lt;</Property>
+            </DataPilot>
+            <Fill/>
+            <DataPilot>
+              <Property name="dataSet">dsUsersWithIn</Property>
+              <Property name="itemCodes">>,>|</Property>
+            </DataPilot>
+          </ToolBar>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <AjaxAction id="updatePostStationAction">
+      <Property name="service">postStationAssignmentService#updatePostStationInfo</Property>
+    </AjaxAction>
+    <AjaxAction id="deleteUserAction">
+      <Property name="service">postStationAssignmentService#deletePostStationUser</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

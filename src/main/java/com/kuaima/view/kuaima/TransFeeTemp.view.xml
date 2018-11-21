@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="TransFeeTemp">
+      <Property name="creationType">com.kuaima.entity.TransFeeTemp</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="transTempNo">
+        <Property name="dataType">String</Property>
+        <Property name="label">模板编码</Property>
+      </PropertyDef>
+      <PropertyDef name="initPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">初始价格</Property>
+      </PropertyDef>
+      <PropertyDef name="perKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">每公里价格</Property>
+      </PropertyDef>
+      <PropertyDef name="serverInitPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">师傅初始金额</Property>
+      </PropertyDef>
+      <PropertyDef name="actualPerKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">实付每公里价格</Property>
+      </PropertyDef>
+      <PropertyDef name="transTempName">
+        <Property></Property>
+        <Property name="label">模板名称</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="creater">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="updateDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="updater">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="initKm">
+        <Property/>
+        <Property name="label">初始公里(km)</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Condition">
+      <PropertyDef name="transTempNo">
+        <Property name="dataType">String</Property>
+        <Property name="label">模板编码</Property>
+      </PropertyDef>
+      <PropertyDef name="initPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">初始价格</Property>
+      </PropertyDef>
+      <PropertyDef name="perKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">每公里价格</Property>
+      </PropertyDef>
+      <PropertyDef name="serverInitPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">师傅初始金额</Property>
+      </PropertyDef>
+      <PropertyDef name="actualPerKmPrice">
+        <Property name="dataType">String</Property>
+        <Property name="label">实付每公里价格</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <Property name="title">运费模板信息维护</Property>
+    <DataSet id="dsTransFeeTemp">
+      <Property name="dataProvider">transFeeTempController#query</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[TransFeeTemp]</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <UpdateAction id="updateAction">
+      <Property name="successMessage">保存成功!</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">transFeeTempController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsTransFeeTemp</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AutoForm id="formCondition">
+      <Property name="labelWidth">100</Property>
+      <Property name="cols">*,*,*,*</Property>
+      <Property name="createPrivateDataSet">true</Property>
+      <Property name="dataType">Condition</Property>
+      <AutoFormElement>
+        <Property name="name">transTempNo</Property>
+        <Property name="label">模板编码</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">initPrice</Property>
+        <Property name="label">初始价格</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">perKmPrice</Property>
+        <Property name="label">每公里价格</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">serverInitPrice</Property>
+        <Property name="label">师傅初始金额</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">actualPerKmPrice</Property>
+        <Property name="label">实付每公里价格</Property>
+        <Editor/>
+      </AutoFormElement>
+    </AutoForm>
+    <ToolBar>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var data = view.get(&quot;#formCondition.entity&quot;);&#xD;
+with (view.get(&quot;#dsTransFeeTemp&quot;)){&#xD;
+set(&quot;parameter&quot;, data);&#xD;
+flushAsync();&#xD;
+}</ClientEvent>
+        <Property name="caption">查询</Property>
+        <Property name="iconClass">fa fa-search</Property>
+      </ToolBarButton>
+      <Separator>
+        <Property name="tip">跳窗编辑</Property>
+      </Separator>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var datas = view.get(&quot;#dsTransFeeTemp.data&quot;);&#xD;
+datas.insert();&#xD;
+view.get(&quot;#dialogTransFeeTemp&quot;).show();&#xD;
+arg.processDefault=false;</ClientEvent>
+        <Property name="caption">添加</Property>
+        <Property name="iconClass">fa fa-plus</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var data = view.get(&quot;#dsTransFeeTemp.data&quot;);&#xD;
+if (data.current) {&#xD;
+    view.id(&quot;dialogModifyTransFeeTemp&quot;).show();&#xD;
+}else {&#xD;
+    dorado.MessageBox.alert(&quot;当前表没有信息可供编辑!&quot;);&#xD;
+}</ClientEvent>
+        <Property name="caption">查看修改</Property>
+        <Property name="iconClass">fa fa-pencil-square-o</Property>
+      </ToolBarButton>
+      <Separator>
+        <Property name="tip">EXCEL导入</Property>
+      </Separator>
+      <ToolBarButton>
+        <ClientEvent name="onClick" signature="self,arg,autoUploadProgressBar,successDownload,failDownload,dialogImportInit">autoUploadProgressBar.set(&quot;value&quot;, '0');&#xD;
+successDownload.set(&quot;disabled&quot;,true);&#xD;
+failDownload.set(&quot;disabled&quot;,true);&#xD;
+dialogImportInit.show();</ClientEvent>
+        <Property name="caption">导入</Property>
+        <Property name="iconClass">fa fa-cloud-upload</Property>
+      </ToolBarButton>
+      <ToolBarButton id="successDownload">
+        <ClientEvent name="onClick">var pathName = window.location.pathname.substring(1); &#xD;
+var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/')); &#xD;
+var fullName= window.location.protocol + '//' + window.location.host + '/'+ webName + '/'; &#xD;
+window.location.href=&quot;/village/transFeeTempSucess&quot;; </ClientEvent>
+        <Property name="caption">成功</Property>
+        <Property name="iconClass">fa fa-thumbs-o-up</Property>
+        <Property name="disabled">true</Property>
+        <Property name="visible">false</Property>
+      </ToolBarButton>
+      <ToolBarButton id="failDownload">
+        <ClientEvent name="onClick">var pathName = window.location.pathname.substring(1); &#xD;
+var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/')); &#xD;
+var fullName= window.location.protocol + '//' + window.location.host + '/'+ webName + '/'; &#xD;
+window.location.href=&quot;/village/transFeeTempFail&quot;; </ClientEvent>
+        <Property name="caption">失败</Property>
+        <Property name="iconClass">fa fa-thumbs-o-down</Property>
+        <Property name="disabled">true</Property>
+        <Property name="visible">false</Property>
+      </ToolBarButton>
+      <Fill/>
+      <ToolBarButton>
+        <Property name="caption">导出</Property>
+        <Property name="iconClass">fa fa-cloud-download</Property>
+        <Property name="action">exportAction</Property>
+      </ToolBarButton>
+      <DataPilot>
+        <Property name="dataSet">dstransFeeTemp</Property>
+        <Property name="itemCodes">pages,pageSize</Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var updateAction=view.get(&quot;#updateAction&quot;);&#xD;
+var selection = view.get(&quot;#dgTransFeeTemp&quot;).get(&quot;selection&quot;);&#xD;
+&#xD;
+if(0 != selection.length) {&#xD;
+dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;,function(){&#xD;
+&#xD;
+for (var i = 0; i &lt; selection.length; i++) {&#xD;
+var select = selection[i];&#xD;
+select.remove();&#xD;
+}&#xD;
+&#xD;
+updateAction.execute();&#xD;
+view.get(&quot;#dstransFeeTemp&quot;).flushAsync(); &#xD;
+})&#xD;
+&#xD;
+} else {&#xD;
+dorado.MessageBox.alert(&quot;请选择需要删除的记录！&quot;);&#xD;
+}&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="iconClass">fa fa-trash-o</Property>
+        <Property name="caption">删除</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgTransFeeTemp">
+      <Property name="dataSet">dsTransFeeTemp</Property>
+      <Property name="dataType">TransFeeTemp</Property>
+      <Property name="selectionMode">multiRows</Property>
+      <Property name="readOnly">true</Property>
+      <RowSelectorColumn/>
+      <RowNumColumn/>
+      <DataColumn name="模板编码">
+        <Property name="caption">模板编码</Property>
+        <Property name="property">transTempNo</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">transTempName</Property>
+        <Property name="align">center</Property>
+        <Property name="caption">模板名称</Property>
+        <Property name="name">模板名称</Property>
+      </DataColumn>
+      <DataColumn name="初始价格">
+        <Property name="caption">初始价格</Property>
+        <Property name="property">initPrice</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="每公里价格">
+        <Property name="caption">每公里价格</Property>
+        <Property name="property">perKmPrice</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="师傅初始金额">
+        <Property name="caption">师傅初始金额</Property>
+        <Property name="property">serverInitPrice</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="实付每公里价格">
+        <Property name="caption">实付每公里价格</Property>
+        <Property name="property">actualPerKmPrice</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="initKm">
+        <Property name="property">initKm</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="dialogTransFeeTemp">
+      <ClientEvent name="onClose">var data=view.id(&quot;dsTransFeeTemp&quot;).getData();&#xD;
+data.cancel();&#xD;
+</ClientEvent>
+      <ClientEvent name="onShow">var addForm = view.get(&quot;#addForm.entity&quot;);&#xD;
+var createCodeAction = view.get(&quot;#createCodeAction&quot;);&#xD;
+createCodeAction.execute(function(result){&#xD;
+	addForm.set(&quot;transTempNo&quot;,result);&#xD;
+});</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="closeable">true</Property>
+      <Property name="caption">数据编辑</Property>
+      <Property name="width">90%</Property>
+      <Property name="height">90%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var data=view.id(&quot;dsTransFeeTemp&quot;).getData();&#xD;
+var dialog=view.id(&quot;dialogTransFeeTemp&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要取消当前操作吗？&quot;,function(){&#xD;
+data.cancel();&#xD;
+dialog.hide();&#xD;
+});</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-share</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dialog = view.id(&quot;dialogTransFeeTemp&quot;);&#xD;
+var action = view.id(&quot;updateAction&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;, function(){&#xD;
+    action.execute(function(){&#xD;
+        dialog.hide();&#xD;
+        view.get(&quot;#dsTransFeeTemp&quot;).flushAsync();&#xD;
+    });&#xD;
+})&#xD;
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check-circle</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="addForm">
+          <Property name="labelWidth">100</Property>
+          <Property name="dataSet">dsTransFeeTemp</Property>
+          <Property name="cols">*,*</Property>
+          <AutoFormElement name="transTempNo">
+            <Property name="name">transTempNo</Property>
+            <Property name="property">transTempNo</Property>
+            <Property name="label">模板编码</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">transTempName</Property>
+            <Property name="property">transTempName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="initPrice">
+            <Property name="name">initPrice</Property>
+            <Property name="property">initPrice</Property>
+            <Property name="label">初始价格</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="perKmPrice">
+            <Property name="name">perKmPrice</Property>
+            <Property name="property">perKmPrice</Property>
+            <Property name="label">每公里价格</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="serverInitPrice">
+            <Property name="name">serverInitPrice</Property>
+            <Property name="property">serverInitPrice</Property>
+            <Property name="label">师傅初始金额</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="actualPerKmPrice">
+            <Property name="name">actualPerKmPrice</Property>
+            <Property name="property">actualPerKmPrice</Property>
+            <Property name="label">实付每公里价格</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">initKm</Property>
+            <Property name="property">initKm</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogImportInit">
+      <Property name="caption">文件上传</Property>
+      <Property name="modal">true</Property>
+      <Property name="autoAdjustPosition">false</Property>
+      <Property name="border">curve</Property>
+      <Property name="center">true</Property>
+      <Property name="resizeable">false</Property>
+      <Property name="shadowMode">sides</Property>
+      <Buttons>
+        <Button layoutConstraint="bottom">
+          <Property name="action">autoUploadAction</Property>
+          <Property name="caption">上传</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <UploadAction id="autoUploadAction">
+          <ClientEvent name="onUploadProgress" signature="self,arg,autoUploadProgressBar">autoUploadProgressBar.set(&quot;value&quot;, arg.total.percent);&#xD;
+&#xD;
+var prettySize = function(value) {&#xD;
+var _format = function(value, unit) {&#xD;
+return (value.toFixed(1) + ' ' + unit).replace('.0', '');&#xD;
+};&#xD;
+var K = 1024;&#xD;
+var M = K * K;&#xD;
+var G = M * K;&#xD;
+var T = G * K;&#xD;
+var dividers = [ T, G, M, K, 1 ];&#xD;
+var units = [ 'TB', 'GB', 'MB', 'KB', 'B' ];&#xD;
+if (value == 0) {&#xD;
+return '0B';&#xD;
+} else if (value &lt; 0) {&#xD;
+return 'Invalid size';&#xD;
+}&#xD;
+&#xD;
+var result = '';&#xD;
+var temp = 0;&#xD;
+for ( var i = 0; i &lt; dividers.length; i++) {&#xD;
+var divider = dividers[i];&#xD;
+if (value >= divider) {&#xD;
+temp = value / divider;&#xD;
+if (temp &lt; 1.05) {&#xD;
+result = _format(value,&#xD;
+units[((i + 1) &lt; units.length) ? (i + 1) : i]);&#xD;
+} else {&#xD;
+result = _format(temp, units[i]);&#xD;
+}&#xD;
+break;&#xD;
+}&#xD;
+}&#xD;
+return result;&#xD;
+};</ClientEvent>
+          <ClientEvent name="onFileUploaded" signature="self,arg,dialogImportInit,successDownload,failDownload">dialogImportInit.close();&#xD;
+var info = arg.returnValue;&#xD;
+dorado.widget.NotifyTipManager.notify(decodeURI(info.tip)); &#xD;
+var success=parseInt(info.success);&#xD;
+var fail=parseInt(info.fail);&#xD;
+if(success>0){&#xD;
+successDownload.set(&quot;disabled&quot;,false);&#xD;
+}&#xD;
+if(fail>0){&#xD;
+failDownload.set(&quot;disabled&quot;,false);&#xD;
+}&#xD;
+view.get(&quot;#dstransFeeTemp&quot;).flushAsync();
+</ClientEvent>
+          <Property name="maxFileSize">100MB</Property>
+          <Property name="fileResolver">transFeeTempController#process</Property>
+          <Filters>
+            <Filter>
+              <Property name="title">Excel files</Property>
+              <Property name="extensions">xls,xlsx</Property>
+            </Filter>
+          </Filters>
+        </UploadAction>
+        <ProgressBar id="autoUploadProgressBar" layoutConstraint="type:top;top:50%;left:10;right:10">
+          <Property name="textPattern">{percent}%</Property>
+        </ProgressBar>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Export2ReportAction id="exportAction">
+      <Property name="template">dgTransFeeTemp</Property>
+      <Property name="dataScope">serverAll</Property>
+      <Property name="executingMessage">正在导出……</Property>
+      <Property name="successMessage">数据导出成功。</Property>
+      <Property name="extension">xlsx</Property>
+      <Property name="maxSize">10000</Property>
+      <Property name="fileName">运费模板</Property>
+    </Export2ReportAction>
+    <AjaxAction id="createCodeAction">
+      <Property name="service">transFeeTempController#createTransFeeCode</Property>
+    </AjaxAction>
+    <Dialog id="dialogModifyTransFeeTemp">
+      <ClientEvent name="onClose">var data=view.id(&quot;dsTransFeeTemp&quot;).getData();&#xD;
+data.cancel();&#xD;
+</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="closeable">true</Property>
+      <Property name="caption">数据编辑</Property>
+      <Property name="width">90%</Property>
+      <Property name="visible">false</Property>
+      <Property name="height">90%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var data = view.id(&quot;dsTransFeeTemp&quot;).getData();&#xD;
+var dialog = view.id(&quot;dialogModifyTransFeeTemp&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要取消当前操作吗？&quot;,function(){&#xD;
+    data.cancel();&#xD;
+    dialog.hide();&#xD;
+});&#xD;
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-share</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dialog = view.id(&quot;dialogModifyTransFeeTemp&quot;);&#xD;
+var action = view.id(&quot;updateAction&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;, function(){&#xD;
+    action.execute(function(){&#xD;
+        dialog.hide();&#xD;
+        view.get(&quot;#dsTransFeeTemp&quot;).flushAsync();&#xD;
+    });&#xD;
+})&#xD;
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check-circle</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="labelWidth">100</Property>
+          <Property name="dataSet">dsTransFeeTemp</Property>
+          <Property name="cols">*,*</Property>
+          <AutoFormElement name="transTempNo">
+            <Property name="name">transTempNo</Property>
+            <Property name="property">transTempNo</Property>
+            <Property name="label">模板编码</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">transTempName</Property>
+            <Property name="property">transTempName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="initPrice">
+            <Property name="name">initPrice</Property>
+            <Property name="property">initPrice</Property>
+            <Property name="label">初始价格</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="perKmPrice">
+            <Property name="name">perKmPrice</Property>
+            <Property name="property">perKmPrice</Property>
+            <Property name="label">每公里价格</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="serverInitPrice">
+            <Property name="name">serverInitPrice</Property>
+            <Property name="property">serverInitPrice</Property>
+            <Property name="label">师傅初始金额</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="actualPerKmPrice">
+            <Property name="name">actualPerKmPrice</Property>
+            <Property name="property">actualPerKmPrice</Property>
+            <Property name="label">实付每公里价格</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">initKm</Property>
+            <Property name="property">initKm</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

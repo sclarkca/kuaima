@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="CapitalFlow">
+      <Property name="creationType">com.kuaima.entity.CapitalFlow</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">Integer</Property>
+      </PropertyDef>
+      <PropertyDef name="orderNo">
+        <Property/>
+        <Property name="label">订单号</Property>
+      </PropertyDef>
+      <PropertyDef name="flowType">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">类型</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;CAPITAL_FLOW_TYPE&quot;)}</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="amount">
+        <Property/>
+        <Property name="label">金额</Property>
+      </PropertyDef>
+      <PropertyDef name="workerId">
+        <Property name="dataType">Long</Property>
+        <Property name="label">师傅编码</Property>
+      </PropertyDef>
+      <PropertyDef name="flowStatus">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;CAPITAL_FLOW_STATUS&quot;)}</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="createTime">
+        <Property name="dataType">DateTime</Property>
+        <Property name="label">创建时间</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Condition">
+      <PropertyDef name="orderNo">
+        <Property/>
+        <Property name="label">订单号</Property>
+      </PropertyDef>
+      <PropertyDef name="flowType">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">类型</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;CAPITAL_FLOW_TYPE&quot;)}</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="amount">
+        <Property/>
+        <Property name="label">金额</Property>
+      </PropertyDef>
+      <PropertyDef name="workerId">
+        <Property name="dataType">Long</Property>
+        <Property name="label">师傅编码</Property>
+      </PropertyDef>
+      <PropertyDef name="flowStatus">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;CAPITAL_FLOW_STATUS&quot;)}</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="createTimeStart">
+        <Property name="dataType">DateTime</Property>
+        <Property name="label">创建时间(起)</Property>
+      </PropertyDef>
+      <PropertyDef name="createTimeEnd">
+        <Property name="dataType">DateTime</Property>
+        <Property name="label">创建时间(至)</Property>
+      </PropertyDef>
+      <PropertyDef name="createTime">
+        <Property name="dataType">DateTime</Property>
+        <Property name="label">创建时间</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <Property name="title">资金流水信息维护</Property>
+    <DataSet id="dsCapitalFlow">
+      <Property name="dataProvider">capitalFlowController#query</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[CapitalFlow]</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <UpdateAction id="updateAction">
+      <Property name="successMessage">保存成功!</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">capitalFlowController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsCapitalFlow</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AutoForm id="formCondition">
+      <Property name="labelWidth">100</Property>
+      <Property name="cols">*,*,*,*</Property>
+      <Property name="createPrivateDataSet">true</Property>
+      <Property name="dataType">Condition</Property>
+      <AutoFormElement>
+        <Property name="name">orderNo</Property>
+        <Property name="property">orderNo</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">flowType</Property>
+        <Property name="property">flowType</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">amount</Property>
+        <Property name="property">amount</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">workerId</Property>
+        <Property name="property">workerId</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">flowStatus</Property>
+        <Property name="property">flowStatus</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">createTimeStart</Property>
+        <Property name="property">createTimeStart</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">createTimeEnd</Property>
+        <Property name="property">createTimeEnd</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">createTime</Property>
+        <Property name="property">createTime</Property>
+        <Editor/>
+      </AutoFormElement>
+    </AutoForm>
+    <ToolBar>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var data = view.get(&quot;#formCondition.entity&quot;);&#xD;
+with (view.get(&quot;#dsCapitalFlow&quot;)){&#xD;
+set(&quot;parameter&quot;, data);&#xD;
+flushAsync();&#xD;
+}</ClientEvent>
+        <Property name="caption">查询</Property>
+        <Property name="iconClass">fa fa-search</Property>
+      </ToolBarButton>
+      <Separator>
+        <Property name="tip">跳窗编辑</Property>
+      </Separator>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var datas = view.get(&quot;#dsCapitalFlow.data&quot;);&#xD;
+datas.insert();&#xD;
+view.get(&quot;#dialogCapitalFlow&quot;).show();&#xD;
+arg.processDefault=false;</ClientEvent>
+        <Property name="caption">添加</Property>
+        <Property name="iconClass">fa fa-plus</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var data=view.get(&quot;#dsCapitalFlow.data&quot;);&#xD;
+if(data.current){&#xD;
+view.id(&quot;dialogCapitalFlow&quot;).show();&#xD;
+}else{&#xD;
+dorado.MessageBox.alert(&quot;当前表没有信息可供编辑!&quot;);&#xD;
+}</ClientEvent>
+        <Property name="caption">查看修改</Property>
+        <Property name="iconClass">fa fa-pencil-square-o</Property>
+      </ToolBarButton>
+      <Separator>
+        <Property name="tip">EXCEL导入</Property>
+      </Separator>
+      <ToolBarButton id="successDownload">
+        <ClientEvent name="onClick">var pathName = window.location.pathname.substring(1); &#xD;
+var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/')); &#xD;
+var fullName= window.location.protocol + '//' + window.location.host + '/'+ webName + '/'; &#xD;
+window.location.href=&quot;/village/capitalFlowSucess&quot;; </ClientEvent>
+        <Property name="caption">成功</Property>
+        <Property name="iconClass">fa fa-thumbs-o-up</Property>
+        <Property name="disabled">true</Property>
+        <Property name="visible">false</Property>
+      </ToolBarButton>
+      <ToolBarButton id="failDownload">
+        <ClientEvent name="onClick">var pathName = window.location.pathname.substring(1); &#xD;
+var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/')); &#xD;
+var fullName= window.location.protocol + '//' + window.location.host + '/'+ webName + '/'; &#xD;
+window.location.href=&quot;/village/capitalFlowFail&quot;; </ClientEvent>
+        <Property name="caption">失败</Property>
+        <Property name="iconClass">fa fa-thumbs-o-down</Property>
+        <Property name="disabled">true</Property>
+        <Property name="visible">false</Property>
+      </ToolBarButton>
+      <Fill/>
+      <ToolBarButton>
+        <Property name="caption">导出</Property>
+        <Property name="iconClass">fa fa-cloud-download</Property>
+        <Property name="action">exportAction</Property>
+      </ToolBarButton>
+      <DataPilot>
+        <Property name="dataSet">dsCapitalFlow</Property>
+        <Property name="itemCodes">pages,pageSize</Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var updateAction=view.get(&quot;#updateAction&quot;);&#xD;
+var selection = view.get(&quot;#dgCapitalFlow&quot;).get(&quot;selection&quot;);&#xD;
+&#xD;
+if(0 != selection.length) {&#xD;
+dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;,function(){&#xD;
+&#xD;
+for (var i = 0; i &lt; selection.length; i++) {&#xD;
+var select = selection[i];&#xD;
+select.remove();&#xD;
+}&#xD;
+&#xD;
+updateAction.execute();&#xD;
+view.get(&quot;#dsCapitalFlow&quot;).flushAsync(); &#xD;
+})&#xD;
+&#xD;
+} else {&#xD;
+dorado.MessageBox.alert(&quot;请选择需要删除的记录！&quot;);&#xD;
+}&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="iconClass">fa fa-trash-o</Property>
+        <Property name="caption">删除</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgCapitalFlow">
+      <Property name="dataSet">dsCapitalFlow</Property>
+      <Property name="dataType">CapitalFlow</Property>
+      <Property name="selectionMode">multiRows</Property>
+      <Property name="readOnly">true</Property>
+      <RowSelectorColumn/>
+      <RowNumColumn/>
+      <DataColumn name="orderNo">
+        <Property name="property">orderNo</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="flowType">
+        <Property name="property">flowType</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="amount">
+        <Property name="property">amount</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="workerId">
+        <Property name="property">workerId</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="flowStatus">
+        <Property name="property">flowStatus</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="createTime">
+        <Property name="property">createTime</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="dialogCapitalFlow">
+      <ClientEvent name="onClose">var data=view.id(&quot;dsCapitalFlow&quot;).getData();&#xD;
+data.cancel();&#xD;
+</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="maximized">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="closeable">true</Property>
+      <Property name="caption">数据编辑</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var data=view.id(&quot;dsCapitalFlow&quot;).getData();&#xD;
+var dialog=view.id(&quot;dialogCapitalFlow&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要取消当前操作吗？&quot;,function(){&#xD;
+data.cancel();&#xD;
+dialog.hide();&#xD;
+});</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-share</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dialog=view.id(&quot;dialogCapitalFlow&quot;);&#xD;
+var action=view.id(&quot;updateAction&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;,function(){&#xD;
+action.execute(function(){&#xD;
+dialog.hide();&#xD;
+view.get(&quot;#dsCapitalFlow&quot;).flushAsync(); &#xD;
+view.get(&quot;#refreshCacheAction&quot;).execute(function(){ &#xD;
+});&#xD;
+});&#xD;
+})</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check-circle</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="labelWidth">100</Property>
+          <Property name="dataSet">dsCapitalFlow</Property>
+          <Property name="cols">*,*</Property>
+          <AutoFormElement>
+            <Property name="name">orderNo</Property>
+            <Property name="property">orderNo</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">flowType</Property>
+            <Property name="property">flowType</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">amount</Property>
+            <Property name="property">amount</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">workerId</Property>
+            <Property name="property">workerId</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">flowStatus</Property>
+            <Property name="property">flowStatus</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">createTime</Property>
+            <Property name="property">createTime</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Export2ReportAction id="exportAction">
+      <Property name="template">dgCapitalFlow</Property>
+      <Property name="dataScope">serverAll</Property>
+      <Property name="executingMessage">正在导出……</Property>
+      <Property name="successMessage">数据导出成功。</Property>
+      <Property name="extension">xlsx</Property>
+      <Property name="maxSize">10000</Property>
+      <Property name="fileName">资金流水</Property>
+    </Export2ReportAction>
+  </View>
+</ViewConfig>
