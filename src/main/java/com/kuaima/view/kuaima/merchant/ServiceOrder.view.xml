@@ -79,9 +79,14 @@
         <Property name="dataType">DateTime</Property>
         <Property name="label">师傅取件时间</Property>
       </PropertyDef>
+      <PropertyDef name="commodityName">
+        <Property name="dataType">String</Property>
+        <Property name="label">商品名称</Property>
+      </PropertyDef>
       <PropertyDef name="sku">
         <Property name="dataType">String</Property>
         <Property name="label">商品编码</Property>
+        <Property name="visible">true</Property>
       </PropertyDef>
       <PropertyDef name="logisticsNo">
         <Property name="dataType">String</Property>
@@ -110,6 +115,10 @@
           <Property name="mapValues">${dorado.getDataProvider(&quot;enumProvider#getValues&quot;).getResult(&quot;HAS_DISTRIBUTION&quot;)}</Property>
         </Property>
       </PropertyDef>
+      <PropertyDef name="postStationName">
+        <Property name="dataType">String</Property>
+        <Property name="label">驿站名称</Property>
+      </PropertyDef>
       <PropertyDef name="hasInstallation">
         <Property name="dataType">Integer</Property>
         <Property name="label">是否安装</Property>
@@ -120,12 +129,16 @@
       <PropertyDef name="retailerOrderNo">
         <Property></Property>
       </PropertyDef>
-      <PropertyDef name="commodityName">
-        <Property name="dataType">String</Property>
-        <Property name="label">商品名称</Property>
-      </PropertyDef>
       <PropertyDef name="merchantCode">
         <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="buCode">
+        <Property/>
+        <Property name="label">品类编码</Property>
+      </PropertyDef>
+      <PropertyDef name="buName">
+        <Property/>
+        <Property name="label">品类</Property>
       </PropertyDef>
     </DataType>
     <DataType name="Condition">
@@ -574,6 +587,17 @@
         <Property name="label">区县</Property>
       </PropertyDef>
     </DataType>
+    <DataType name="Bu">
+      <PropertyDef name="id">
+        <Property name="dataType">Integer</Property>
+      </PropertyDef>
+      <PropertyDef name="buCode">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="buName">
+        <Property/>
+      </PropertyDef>
+    </DataType>
   </Model>
   <View>
     <Property name="packages">font-awesome</Property>
@@ -635,11 +659,6 @@
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
-        <Property name="name">workerId</Property>
-        <Property name="label">安装师傅编码</Property>
-        <Editor/>
-      </AutoFormElement>
-      <AutoFormElement>
         <Property name="name">receiver</Property>
         <Property name="label">收货人</Property>
         <Editor/>
@@ -674,6 +693,7 @@
         <Property name="label">省</Property>
         <Property name="trigger">ddProvince</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
@@ -681,6 +701,7 @@
         <Property name="label">市</Property>
         <Property name="trigger">ddCity</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
@@ -688,18 +709,21 @@
         <Property name="label">区县</Property>
         <Property name="trigger">ddRegion</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
         <Property name="name">town</Property>
         <Property name="label">镇</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
         <Property name="name">address</Property>
         <Property name="label">详细地址</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
     </AutoForm>
@@ -854,12 +878,14 @@ if (currentData){&#xD;
       <Property name="readOnly">true</Property>
       <Property name="scrollMode">lazyRender</Property>
       <Property name="stretchColumnsMode">auto</Property>
+      <Property name="dynaRowHeight">true</Property>
       <RowSelectorColumn/>
       <RowNumColumn/>
       <DataColumn name="定单编码">
         <Property name="caption">定单编码</Property>
         <Property name="property">orderNo</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="订单状态">
         <Property name="caption">订单状态</Property>
@@ -892,26 +918,39 @@ if (currentData){&#xD;
         <Property name="caption">详细地址</Property>
         <Property name="property">address</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="预约安装时间">
         <Property name="caption">预约安装时间</Property>
         <Property name="property">appointmentTime</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
+      </DataColumn>
+      <DataColumn name="commodityName">
+        <Property name="property">commodityName</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="商品编码">
         <Property name="caption">商品编码</Property>
         <Property name="property">sku</Property>
         <Property name="align">center</Property>
+        <Property name="visible">false</Property>
       </DataColumn>
       <DataColumn name="物流单号">
         <Property name="caption">物流单号</Property>
         <Property name="property">logisticsNo</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
+      </DataColumn>
+      <DataColumn name="postStationName">
+        <Property name="property">postStationName</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="驿站编码">
         <Property name="caption">驿站编码</Property>
         <Property name="property">postStationCode</Property>
         <Property name="align">center</Property>
+        <Property name="visible">false</Property>
       </DataColumn>
       <DataColumn name="省">
         <Property name="caption">省</Property>
@@ -942,6 +981,10 @@ if (currentData){&#xD;
         <Property name="align">center</Property>
         <Property name="caption">是否安装</Property>
         <Property name="name">是否安装</Property>
+      </DataColumn>
+      <DataColumn name="buName">
+        <Property name="property">buName</Property>
+        <Property name="align">center</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="dialogAddServiceOrder2">
@@ -993,7 +1036,7 @@ if (!sku) {&#xD;
     if (!receiver || !receiverPhone) {&#xD;
         dorado.MessageBox.alert('请填写收货人信息');&#xD;
     }    else &#xD;
-        if (!provinceName || !cityName || !regionName || !address) {&#xD;
+        if (!cityName || !regionName || !address) {&#xD;
             dorado.MessageBox.alert('请填写收货人地址信息');&#xD;
         }        else {&#xD;
             var parameter = {&#xD;
@@ -1038,7 +1081,7 @@ else &#xD;
         dorado.MessageBox.alert('请填写收货人信息');&#xD;
     }&#xD;
     else &#xD;
-        if (!provinceName || !cityName || !regionName || !address) {&#xD;
+        if (!cityName || !regionName || !address) {&#xD;
             dorado.MessageBox.alert('请填写收货人地址信息');&#xD;
         }&#xD;
         else {&#xD;
@@ -1079,6 +1122,18 @@ else &#xD;
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
+            <Property name="name">buCode</Property>
+            <Property name="property">buCode</Property>
+            <Property name="trigger">ddBu</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">buName</Property>
+            <Property name="property">buName</Property>
+            <Property name="trigger">ddBu</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
             <Property name="name">commodityName</Property>
             <Property name="property">commodityName</Property>
             <Property name="trigger">ddCommodity</Property>
@@ -1094,14 +1149,6 @@ else &#xD;
             <Property name="name">receiverPhone</Property>
             <Property name="property">receiverPhone</Property>
             <Property name="label">收货手机</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">provinceName</Property>
-            <Property name="property">provinceName</Property>
-            <Property name="label">省</Property>
-            <Property name="name">provinceName</Property>
-            <Property name="trigger">ddProvince1</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -1149,14 +1196,6 @@ else &#xD;
             <Property name="label">商品编码</Property>
             <Property name="readOnly">true</Property>
             <Property name="trigger">ddCommodity</Property>
-            <Property name="visible">false</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement name="province">
-            <Property name="name">province</Property>
-            <Property name="property">province</Property>
-            <Property name="label">省</Property>
-            <Property name="trigger">ddProvince1</Property>
             <Property name="visible">false</Property>
             <Editor/>
           </AutoFormElement>
@@ -1617,13 +1656,18 @@ data.set(&quot;regionName&quot;,&quot;&quot;);</ClientEvent>
       <Property name="filterOnOpen">true</Property>
       <Property name="filterOnTyping">true</Property>
     </DataSetDropDown>
+    <DataSet id="dsOpenCity">
+      <Property name="dataProvider">openCityService#queryOpenCityByBuCode</Property>
+      <Property name="dataType">[City]</Property>
+      <Property name="loadMode">manual</Property>
+    </DataSet>
     <DataSetDropDown id="ddCity1">
-      <ClientEvent name="beforeExecute">var dsCity=view.get(&quot;#dsCity&quot;); &#xD;
+      <ClientEvent name="beforeExecute">var dsOpenCity=view.get(&quot;#dsOpenCity&quot;); &#xD;
 var data=view.get(&quot;#addOrderForm2.entity&quot;);&#xD;
-var province = data.get(&quot;province&quot;);&#xD;
-if (province||&quot;&quot;==province) {&#xD;
-	dsCity.set(&quot;parameter&quot;, province);&#xD;
-	dsCity.flushAsync();&#xD;
+var buCode = data.get(&quot;buCode&quot;);&#xD;
+if (buCode||&quot;&quot;==buCode) {&#xD;
+	dsOpenCity.set(&quot;parameter&quot;, buCode);&#xD;
+	dsOpenCity.flushAsync();&#xD;
 }&#xD;
 </ClientEvent>
       <ClientEvent name="onClose">var data=view.get(&quot;#addOrderForm2.entity&quot;);&#xD;
@@ -1631,7 +1675,7 @@ data.set(&quot;region&quot;,&quot;&quot;);&#xD;
 data.set(&quot;regionName&quot;,&quot;&quot;);</ClientEvent>
       <Property name="assignmentMap">city=adCode,cityName=name</Property>
       <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsCity</Property>
+      <Property name="dataSet">dsOpenCity</Property>
       <Property name="displayProperty">name</Property>
       <Property name="dynaFilter">true</Property>
       <Property name="filterMode">clientSide</Property>
@@ -1657,11 +1701,19 @@ if (city||&quot;&quot;==city) {&#xD;
       <Property name="filterOnTyping">true</Property>
     </DataSetDropDown>
     <DataSet id="dsCommodity">
-      <Property name="dataProvider">commodityController#queryCmdList</Property>
+      <Property name="dataProvider">openCityService#queryCmmdityListByMerCodeAndBuCode</Property>
       <Property name="dataType">[Commodity]</Property>
-      <Property name="loadMode">lazy</Property>
+      <Property name="loadMode">manual</Property>
     </DataSet>
     <DataSetDropDown id="ddCommodity">
+      <ClientEvent name="beforeExecute">var dsCommodity=view.get(&quot;#dsCommodity&quot;); &#xD;
+var data=view.get(&quot;#addOrderForm2.entity&quot;);&#xD;
+var buCode = data.get(&quot;buCode&quot;);&#xD;
+if (buCode||&quot;&quot;==buCode) {&#xD;
+	dsCommodity.set(&quot;parameter&quot;, buCode);&#xD;
+	dsCommodity.flushAsync();&#xD;
+}&#xD;
+</ClientEvent>
       <Property name="assignmentMap">sku=sku,commodityName=commodityName</Property>
       <Property name="autoOpen">true</Property>
       <Property name="dataSet">dsCommodity</Property>
@@ -2239,5 +2291,31 @@ dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;,function(){&#xD;
     <AjaxAction id="deleteAction">
       <Property name="service">serviceOrderController#deleteOrder</Property>
     </AjaxAction>
+    <DataSet id="dsBu">
+      <Property name="dataProvider">openCityService#queryBuList</Property>
+      <Property name="dataType">[Bu]</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <DataSetDropDown id="ddBu">
+      <ClientEvent name="beforeExecute">var dsCity=view.get(&quot;#dsCity&quot;); &#xD;
+var data=view.get(&quot;#formCondition.entity&quot;);&#xD;
+var province = data.get(&quot;province&quot;);&#xD;
+if (province||&quot;&quot;==province) {&#xD;
+	dsCity.set(&quot;parameter&quot;, province);&#xD;
+	dsCity.flushAsync();&#xD;
+}&#xD;
+</ClientEvent>
+      <ClientEvent name="onClose">var data=view.get(&quot;#formCondition.entity&quot;);&#xD;
+data.set(&quot;region&quot;,&quot;&quot;);&#xD;
+data.set(&quot;regionName&quot;,&quot;&quot;);</ClientEvent>
+      <Property name="assignmentMap">buCode=buCode,buName=buName</Property>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsBu</Property>
+      <Property name="displayProperty">buName</Property>
+      <Property name="dynaFilter">true</Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="filterOnOpen">true</Property>
+      <Property name="filterOnTyping">true</Property>
+    </DataSetDropDown>
   </View>
 </ViewConfig>

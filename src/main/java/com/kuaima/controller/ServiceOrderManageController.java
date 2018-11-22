@@ -15,9 +15,14 @@ import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.dorado.data.provider.filter.FilterOperator;
+import com.kuaima.entity.Bu;
+import com.kuaima.entity.Commodity;
 import com.kuaima.entity.ServiceOrder;
+import com.kuaima.service.BuService;
 import com.kuaima.service.CityService;
+import com.kuaima.service.CommodityService;
 import com.kuaima.service.EncodingTypeService;
+import com.kuaima.service.PostStationService;
 import com.kuaima.service.ServiceOrderService;
 import com.kuaima.utils.common.MyCriteriaUtils;
 import com.kuaima.utils.common.MyDateUtil;
@@ -33,7 +38,12 @@ public class ServiceOrderManageController {
 	ServiceOrderService serviceOrderService;
 	@Autowired
 	EncodingTypeService encodingTypeService;
-
+	@Autowired
+	CommodityService commodityService;
+	@Autowired
+	PostStationService postStationService;
+	@Autowired
+	BuService buService;
 	/**
 	 * 查询
 	 */
@@ -53,6 +63,23 @@ public class ServiceOrderManageController {
 			String cityName = cityService.queryCityNameByAcCode(city);
 			String region = serviceOrder.getRegion();
 			String regionName = cityService.queryCityNameByAcCode(region);
+			String sku = serviceOrder.getSku();
+			// 商品信息
+			Commodity commodity = commodityService.queryCmmdityByCode(sku);
+			if (null != commodity){
+				// 商品名称
+				serviceOrder.setCommodityName(commodity.getCommodityName());
+				String buCode = commodity.getBuCode();
+				// 品类信息
+				Bu bu = buService.queryBuName(buCode);
+				if (null != bu){
+					// 品类名称
+					serviceOrder.setBuName(bu.getBuName());
+				}
+			}
+			String postStationCode = serviceOrder.getPostStationCode();
+			String postStationName = postStationService.queryPostNameByCode(postStationCode);
+			serviceOrder.setPostStationName(postStationName);
 			serviceOrder.setProvinceName(provinceName);
 			serviceOrder.setCityName(cityName);
 			serviceOrder.setRegionName(regionName);

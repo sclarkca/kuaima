@@ -80,65 +80,20 @@ public class ServiceOrder {
 
 	// 商户编码
 	private String merchantCode;
-	// 根据enum值返回对应的属性名称;
-	public static String getPropertyNameByEnum(int enumValue) {
-		switch (enumValue) {
-		case 1:
-			return "retailerOrderNo";
-		case 2:
-			return "receiver";
-		case 3:
-			return "receiverPhone";
-		case 4:
-			return "province";
-		case 5:
-			return "city";
-		case 6:
-			return "region";
-		case 7:
-			return "address";
-		case 8:
-			return "appointmentTime";
-		case 9:
-			return "logisticsNo";
-		case 10:
-			return "hasDistribution";
-		case 11:
-			return "hasInstallation";
-		default:
-			return "";
-		}
-	};
 
-	// 根据enum值返回对应的属性类型;
-	public static String getPropertyTypeByEnum(int enumValue) {
-		switch (enumValue) {
-		case 1:
-			return "String";
-		case 2:
-			return "String";
-		case 3:
-			return "String";
-		case 4:
-			return "String";
-		case 5:
-			return "String";
-		case 6:
-			return "String";
-		case 7:
-			return "String";
-		case 8:
-			return "date";
-		case 9:
-			return "String";
-		case 10:
-			return "Integer";
-		case 11:
-			return "Integer";
-		default:
-			return "";
-		}
-	}
+	// 驿站名称
+	private String postStationName;
+
+	// 商品名称
+	private String commodityName;
+
+	// 品类编码
+	private String buCode;
+	// 品类名称
+	private String buName;
+
+	// 安装师傅cardName
+	private String worker;
 
 	@Id
 	@GeneratedValue(generator = "uuidGenerator")
@@ -409,5 +364,49 @@ public class ServiceOrder {
 		this.merchantCode = merchantCode;
 	}
 
-	
+	@Transient
+	public String getPostStationName() {
+		return postStationName;
+	}
+
+	public void setPostStationName(String postStationName) {
+		this.postStationName = postStationName;
+	}
+
+	@Transient
+	public String getCommodityName() {
+		return commodityName;
+	}
+
+	public void setCommodityName(String commodityName) {
+		this.commodityName = commodityName;
+	}
+
+	@Transient
+	public String getBuCode() {
+		return buCode;
+	}
+
+	public void setBuCode(String buCode) {
+		this.buCode = buCode;
+	}
+
+	@Transient
+	public String getBuName() {
+		return buName;
+	}
+
+	public void setBuName(String buName) {
+		this.buName = buName;
+	}
+
+	@Transient
+	public String getWorker() {
+		return worker;
+	}
+
+	public void setWorker(String worker) {
+		this.worker = worker;
+	}
+
 }

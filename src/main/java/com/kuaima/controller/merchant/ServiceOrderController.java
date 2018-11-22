@@ -1,9 +1,6 @@
 package com.kuaima.controller.merchant;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +12,6 @@ import java.util.Random;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,17 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.bstek.bdf3.dorado.jpa.CriteriaUtils;
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
-import com.bstek.bdf3.log.annotation.Log;
 import com.bstek.bdf3.security.ContextUtils;
 import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.dorado.data.provider.filter.FilterOperator;
-import com.bstek.dorado.uploader.UploadFile;
-import com.bstek.dorado.uploader.annotation.FileResolver;
 import com.bstek.dorado.view.resolver.ClientRunnableException;
+import com.kuaima.entity.Bu;
 import com.kuaima.entity.City;
+import com.kuaima.entity.Commodity;
 import com.kuaima.entity.CommodityQuotedPrice;
 import com.kuaima.entity.InstallTemp;
 import com.kuaima.entity.MerchantFeeRelationship;
@@ -46,19 +41,15 @@ import com.kuaima.entity.merchant.MerchantGrantedAuthority;
 import com.kuaima.entity.merchant.MerchantInfo;
 import com.kuaima.entity.repo.ServiceOrderImp;
 import com.kuaima.entity.repo.WorkerOrderCount;
+import com.kuaima.service.BuService;
 import com.kuaima.service.CityService;
+import com.kuaima.service.CommodityService;
 import com.kuaima.service.EncodingTypeService;
+import com.kuaima.service.PostStationService;
 import com.kuaima.service.ServiceOrderService;
 import com.kuaima.utils.common.MapUtil;
-import com.kuaima.utils.common.MyBeanUtil;
 import com.kuaima.utils.common.MyCriteriaUtils;
 import com.kuaima.utils.common.MyDateUtil;
-import com.kuaima.utils.common.MyStringUtil;
-import com.kuaima.utils.excel.ExcelData;
-import com.kuaima.utils.excel.ExcelHeader;
-import com.kuaima.utils.excel.ExcelImportError;
-import com.kuaima.utils.excel.ExcelReader;
-import com.kuaima.utils.excel.ExcelUtil;
 
 @Controller
 @Transactional
@@ -71,7 +62,12 @@ public class ServiceOrderController {
 	ServiceOrderService serviceOrderService;
 	@Autowired
 	EncodingTypeService encodingTypeService;
-
+	@Autowired
+	CommodityService commodityService;
+	@Autowired
+	PostStationService postStationService;
+	@Autowired
+	BuService buService;
 	/**
 	 * 创建订单
 	 */
@@ -87,6 +83,9 @@ public class ServiceOrderController {
 		String sku = serviceOrder.getSku();
 		// 获取 市区详细地址
 		String city = serviceOrder.getCity();
+		// 由cityCode城市编码获取省编码
+		String province = city.substring(0, 2);
+		serviceOrder.setProvince(province + "0000");
 		String cityName = cityService.queryCityNameByAcCode(city);
 		String region = serviceOrder.getRegion();
 		String regionName = cityService.queryCityNameByAcCode(region);
@@ -106,11 +105,10 @@ public class ServiceOrderController {
 		String merchantCode = this.queryNowUserMerchantCode();
 		serviceOrder.setMerchantCode(merchantCode);
 		/**
-		 * String orderNo = serviceOrder.getOrderNo();
-		 * String sixNo = orderNo.substring(14, orderNo.length());
-		 * this.crudCode(sixNo);
+		 * String orderNo = serviceOrder.getOrderNo(); String sixNo =
+		 * orderNo.substring(14, orderNo.length()); this.crudCode(sixNo);
 		 */
-		
+
 		// 初始化订单状态 10:未发货
 		serviceOrder.setOrderStatus("10");
 		// 获取 市区详细地址
@@ -354,6 +352,19 @@ public class ServiceOrderController {
 			String cityName = cityService.queryCityNameByAcCode(city);
 			String region = serviceOrder.getRegion();
 			String regionName = cityService.queryCityNameByAcCode(region);
+			String sku = serviceOrder.getSku();
+			Commodity commodity = commodityService.queryCmmdityByCode(sku);
+			if (null != commodity){
+				serviceOrder.setCommodityName(commodity.getCommodityName());
+				String buCode = commodity.getBuCode();
+				Bu bu = buService.queryBuName(buCode);
+				if (null != bu){
+					serviceOrder.setBuName(bu.getBuName());
+				}
+			}
+			String postStationCode = serviceOrder.getPostStationCode();
+			String postStationName = postStationService.queryPostNameByCode(postStationCode);
+			serviceOrder.setPostStationName(postStationName);
 			serviceOrder.setProvinceName(provinceName);
 			serviceOrder.setCityName(cityName);
 			serviceOrder.setRegionName(regionName);
@@ -521,230 +532,6 @@ public class ServiceOrderController {
 		return merchantInfo.getMerchantCode();
 	}
 
-	/**
-	 * EXCEL文件上传导入
-	 */
-	@FileResolver
-	@Transactional
-	@Log(module = "订单信息", category = "批量导入")
-	public Map<String, String> process(UploadFile file, Map<String, Object> parameter) throws Exception {
-		try (InputStream inputStream = file.getInputStream();) {
-			String sku = (String) parameter.get("sku");
-			// 导EXCEL
-			String result = batchCreateFromExcel(inputStream, sku);
-			String success = StringUtils.substringBefore(result, ",");
-			String fail = StringUtils.substringAfter(result, ",");
-			String tip = "导入完成|成功" + success + "条|失败" + fail + "条";
-			tip = URLEncoder.encode(tip, "UTF-8");
-			Map<String, String> data = new HashMap<>();
-			data.put("tip", tip);
-			data.put("success", success);
-			data.put("fail", fail);
-			return data;
-		} catch (ClientRunnableException e) {
-			Map<String, String> data = new HashMap<>();
-			String script = e.getScript();
-			data.put("tip", script.substring(script.indexOf("('"), script.indexOf("')")));
-			return data;
-		} catch (IllegalStateException e) {
-			Map<String, String> data = new HashMap<>();
-			data.put("tip", "导入失败");
-			return data;
-		} catch (IOException e) {
-			Map<String, String> data = new HashMap<>();
-			data.put("tip", "导入失败");
-			return data;
-		}
-	}
-
-	// 根据导入配置批量创建
-	public String batchCreateFromExcel(InputStream inputStream, String sku) throws Exception {
-		ExcelData toFiledExcelData = new ExcelData();
-		ExcelReader excelReader = new ExcelReader();
-		// EXCEL表头集合
-		Sheet sheetByFormIO = ExcelUtil.getSheetByFormIO(inputStream, 0);
-		List<ExcelHeader> headerList = excelReader.getExcelDataHeaderListFromSheetIO(sheetByFormIO);
-		// 映射关系
-		List<Integer> initMappingList = new ArrayList<>();
-		for (int i = 0; i < headerList.size(); i++) {
-			String toFieldStr = BeanUtils.getProperty(toFiledExcelData, "toField" + (i + 1));
-			int toFiledValue = Integer.parseInt(toFieldStr);
-			initMappingList.add(toFiledValue);
-		}
-		// 获取List
-		List<ExcelData> initExcelDataList = excelReader.getExcelDataListFromSheetIO(sheetByFormIO);
-		// excelRow=EXCEL行数量
-		int rowNum = initExcelDataList.size();
-		// 组装新对象
-		List<ServiceOrder> newObjectList = new ArrayList<>();
-		// 记录错误行
-		List<ExcelImportError> errorRowList = new ArrayList<>();
-		for (int excelRow = 0; excelRow < rowNum; excelRow++) {
-			// 入库实体类
-			ServiceOrder serviceOrder = new ServiceOrder();
-			// 记录错误类
-			ExcelImportError excelImportError = new ExcelImportError();
-			// 错误原因
-			StringBuilder reasonSb = new StringBuilder();
-			// EXCEL的每一行数据
-			ExcelData excelData = (ExcelData) initExcelDataList.get(excelRow);
-			// 正式导入
-			for (int mappingIdx = 0; mappingIdx < headerList.size(); mappingIdx++) {
-				String propertyType = ServiceOrder.getPropertyTypeByEnum(initMappingList.get(mappingIdx));
-				String propertyName = ServiceOrder.getPropertyNameByEnum(initMappingList.get(mappingIdx));
-				if (initMappingList.get(mappingIdx) != 0) {
-					if (StringUtils.isBlank(propertyType)) {
-						continue;
-					}
-					if (propertyType.equals("String")) {
-						String arg = BeanUtils.getProperty(excelData, "field" + (mappingIdx + 1));
-						// EXCEL空值
-						if (StringUtils.isBlank(arg)) {
-							// 必填项
-							if (!"retailerOrderNo".equals(propertyName)) {
-								// 记录错误
-								reasonSb.append(" 第" + (mappingIdx + 1) + "列应该是必填项");
-							}
-						}
-						BeanUtils.setProperty(serviceOrder, propertyName, arg);
-					}
-					if (propertyType.equals("date")) {
-						String valueFromForm = BeanUtils.getProperty(excelData, "field" + (mappingIdx + 1));
-						valueFromForm = MyStringUtil.cleanInput(valueFromForm);
-						// EXCEL空值
-						if (StringUtils.isBlank(valueFromForm)) {
-							// 必填项
-							if (isRequiredByRelatedFieldValue(propertyName)) {
-								// 记录错误
-								reasonSb.append(" 第" + (mappingIdx + 1) + "列应该是必填项");
-							}
-						}
-						if (StringUtils.isNotBlank(valueFromForm)) {
-							// 日期格式不对
-							try {
-								Date arg = MyDateUtil.parserToSecond(valueFromForm);
-								BeanUtils.setProperty(serviceOrder, propertyName, arg);
-							} catch (Exception e) {
-								reasonSb.append(" 第" + (mappingIdx + 1) + "列日期格式不对");
-							}
-						}
-					}
-					if (propertyType.equals("Integer")) {
-						String valueFromForm = BeanUtils.getProperty(excelData, "field" + (mappingIdx + 1));
-						if (StringUtils.isNotBlank(valueFromForm)) {
-							// 必填项
-							if (!"hasDistribution".equals(propertyName)) {
-								if ("Y".equals(valueFromForm)) {
-									BeanUtils.setProperty(serviceOrder, propertyName, 1);
-								}
-								if ("N".equals(valueFromForm)) {
-									BeanUtils.setProperty(serviceOrder, propertyName, 2);
-								}
-							}
-							if (!"hasInstallation".equals(propertyName)) {
-								if ("Y".equals(valueFromForm)) {
-									BeanUtils.setProperty(serviceOrder, propertyName, 1);
-								}
-								if ("N".equals(valueFromForm)) {
-									BeanUtils.setProperty(serviceOrder, propertyName, 2);
-								}
-							}
-						}
-
-					}
-				}
-			}
-			excelImportError.setRowIdx(excelRow);
-			excelImportError.setReason(reasonSb.toString());
-			errorRowList.add(excelImportError);
-			newObjectList.add(serviceOrder);
-		}
-		// 重整errorRowList
-		List<ExcelImportError> newErrorRowList = new ArrayList<>();
-		for (int i = 0; i < errorRowList.size(); i++) {
-			ExcelImportError excelImportError = errorRowList.get(i);
-			if (StringUtils.isNotBlank(excelImportError.getReason())) {
-				newErrorRowList.add(excelImportError);
-			}
-		}
-		List<ExcelImportError> newGoodRowList = new ArrayList<>();
-		for (int i = 0; i < errorRowList.size(); i++) {
-			ExcelImportError excelImportError = errorRowList.get(i);
-			if (StringUtils.isBlank(excelImportError.getReason())) {
-				newGoodRowList.add(excelImportError);
-			}
-		}
-		// errorIdxList
-		List<Integer> errorIdxList = new ArrayList<>();
-		for (int i = 0; i < newErrorRowList.size(); i++) {
-			errorIdxList.add(newErrorRowList.get(i).getRowIdx());
-		}
-		// goodIdxList
-		List<Integer> goodIdxList = new ArrayList<>();
-		for (int i = 0; i < newGoodRowList.size(); i++) {
-			goodIdxList.add(newGoodRowList.get(i).getRowIdx());
-		}
-		// 根据goodIdxList获得goodObjectList
-		List<ServiceOrder> goodObjectList = new ArrayList<>();
-		for (int i = 0; i < goodIdxList.size(); i++) {
-			ServiceOrder serviceOrder = newObjectList.get(goodIdxList.get(i));
-			if (!MyBeanUtil.checkAllFieldValueNull(serviceOrder)) {
-				goodObjectList.add(serviceOrder);
-			}
-		}
-		// 根据goodIdxList获得goodExcelDataList
-		List<ExcelData> goodExcelDataList = new ArrayList<>();
-		for (int i = 0; i < goodIdxList.size(); i++) {
-			ExcelData excelData = initExcelDataList.get(goodIdxList.get(i));
-			goodExcelDataList.add(excelData);
-		}
-		// 根据errorIdxList获得badExcelDataList
-		List<ExcelData> badExcelDataList = new ArrayList<>();
-		for (int i = 0; i < errorIdxList.size(); i++) {
-			ExcelData excelData = initExcelDataList.get(errorIdxList.get(i));
-			badExcelDataList.add(excelData);
-		}
-		// 成功
-		if (goodExcelDataList.size() > 0) {
-			for (int i = 0; i < goodObjectList.size(); i++) {
-				// 创建动作
-				ServiceOrder serviceOrder = goodObjectList.get(i);
-				// 创建订单编码 日期+6位流水号
-				SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmsss");
-				String temp = sf.format(new Date());
-				String sixNo = this.create6RandomNum();
-				String orderNo = temp + sixNo;
-				serviceOrder.setOrderNo(orderNo);
-				extracted(sku, serviceOrder, orderNo);
-			}
-		}
-		String result = goodObjectList.size() + "," + badExcelDataList.size();
-		return result;
-	}
-
-	private void extracted(String sku, ServiceOrder serviceOrder, String orderNo) {
-		serviceOrder.setOrderStatus("10");
-		serviceOrder.setCreateDate(new Date());
-		serviceOrder.setCreater(ContextUtils.getLoginUsername());
-		// 获取 市区详细地址
-		String city = serviceOrder.getCity();
-		String cityName = cityService.queryCityNameByAcCode(city);
-		String region = serviceOrder.getRegion();
-		String regionName = cityService.queryCityNameByAcCode(region);
-		String address = serviceOrder.getAddress();
-		String addr = cityName + regionName + address;
-		// 根据城市编码查询驿站编码
-		PostStation postStation = JpaUtil.linq(PostStation.class).equal("region", region).findOne();
-		String postStationCode = postStation.getPostStationCode();
-		serviceOrder.setPostStationCode(postStationCode);
-		JpaUtil.persist(serviceOrder);
-		// 更新编码
-		/**
-		 * this.crudCode(sixNo);
-		 */
-		createToBOrder(sku, serviceOrder, region, addr);
-	}
-
 	// 1.创建toB的费用订单
 	private void createToBOrder(String sku, ServiceOrder serviceOrder, String region, String addr) {
 		StringBuilder script = new StringBuilder();
@@ -910,12 +697,7 @@ public class ServiceOrderController {
 		}
 	}
 
-
-	// 根据字段值取必填项
-	private boolean isRequiredByRelatedFieldValue(String propertyName) {
-		return false;
-	}
-
+	
 	/**
 	 * 查询师傅当天订单数列表
 	 * 
@@ -1035,21 +817,22 @@ public class ServiceOrderController {
 		SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmsss");
 		String temp = sf.format(new Date());
 		/**
-		 * String sixNo = encodingTypeService.createCode(ENCODING_TYPE_CODE, PREFIX);
+		 * String sixNo = encodingTypeService.createCode(ENCODING_TYPE_CODE,
+		 * PREFIX);
 		 */
 		String sixNo = this.create6RandomNum();
 		return temp + sixNo;
 	}
 
-	public String create6RandomNum(){
+	public String create6RandomNum() {
 		Random random = new Random();
-		String result="";
-		for (int i=0;i<6;i++)
-		{
-			result+=random.nextInt(10);
+		String result = "";
+		for (int i = 0; i < 6; i++) {
+			result += random.nextInt(10);
 		}
 		return result;
 	}
+
 	/**
 	 * 取消订单
 	 * 

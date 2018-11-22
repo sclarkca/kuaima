@@ -127,6 +127,21 @@
       <PropertyDef name="merchantCode">
         <Property></Property>
       </PropertyDef>
+      <PropertyDef name="postStationName">
+        <Property></Property>
+        <Property name="label">驿站</Property>
+      </PropertyDef>
+      <PropertyDef name="buCode">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="buName">
+        <Property></Property>
+        <Property name="label">品类</Property>
+      </PropertyDef>
+      <PropertyDef name="worker">
+        <Property/>
+        <Property name="label">师傅</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="Condition">
       <PropertyDef name="orderNo">
@@ -510,15 +525,11 @@
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
-        <Property name="name">postStationCode</Property>
-        <Property name="label">驿站编码</Property>
-        <Editor/>
-      </AutoFormElement>
-      <AutoFormElement>
         <Property name="name">province</Property>
         <Property name="label">省</Property>
         <Property name="trigger">ddProvince</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
@@ -526,6 +537,7 @@
         <Property name="label">市</Property>
         <Property name="trigger">ddCity</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
@@ -533,18 +545,21 @@
         <Property name="label">区县</Property>
         <Property name="trigger">ddRegion</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
         <Property name="name">town</Property>
         <Property name="label">镇</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
         <Property name="name">address</Property>
         <Property name="label">详细地址</Property>
         <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
     </AutoForm>
@@ -672,21 +687,28 @@ if (currentData){&#xD;
       <Property name="readOnly">true</Property>
       <Property name="scrollMode">lazyRender</Property>
       <Property name="stretchColumnsMode">off</Property>
+      <Property name="dynaRowHeight">true</Property>
       <RowNumColumn/>
       <DataColumn name="定单编码">
         <Property name="caption">定单编码</Property>
         <Property name="property">orderNo</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="订单状态">
         <Property name="caption">订单状态</Property>
         <Property name="property">orderStatus</Property>
         <Property name="align">center</Property>
       </DataColumn>
-      <DataColumn name="安装师傅编码">
-        <Property name="caption">安装师傅编码</Property>
+      <DataColumn name="worker">
+        <Property name="property">worker</Property>
+        <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="caption">师傅编码</Property>
         <Property name="property">workerId</Property>
         <Property name="align">center</Property>
+        <Property name="name">师傅编码</Property>
       </DataColumn>
       <DataColumn name="收货人">
         <Property name="caption">收货人</Property>
@@ -714,41 +736,62 @@ if (currentData){&#xD;
         <Property name="caption">详细地址</Property>
         <Property name="property">address</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="预约安装时间">
         <Property name="caption">预约安装时间</Property>
         <Property name="property">appointmentTime</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="安装完成时间">
         <Property name="caption">安装完成时间</Property>
         <Property name="property">finishTime</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="系统分配时间">
         <Property name="caption">系统分配时间</Property>
         <Property name="property">allocateTime</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="师傅取件时间">
         <Property name="caption">师傅取件时间</Property>
         <Property name="property">takeTime</Property>
+        <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
+      </DataColumn>
+      <DataColumn name="commodityName">
+        <Property name="property">commodityName</Property>
+        <Property name="wrappable">true</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="buName">
+        <Property name="property">buName</Property>
         <Property name="align">center</Property>
       </DataColumn>
       <DataColumn name="商品编码">
         <Property name="caption">商品编码</Property>
         <Property name="property">sku</Property>
         <Property name="align">center</Property>
+        <Property name="visible">false</Property>
       </DataColumn>
       <DataColumn name="物流单号">
         <Property name="caption">物流单号</Property>
         <Property name="property">logisticsNo</Property>
         <Property name="align">center</Property>
+        <Property name="wrappable">true</Property>
+      </DataColumn>
+      <DataColumn name="postStationName">
+        <Property name="property">postStationName</Property>
+        <Property name="wrappable">true</Property>
       </DataColumn>
       <DataColumn name="驿站编码">
         <Property name="caption">驿站编码</Property>
         <Property name="property">postStationCode</Property>
         <Property name="align">center</Property>
+        <Property name="visible">false</Property>
       </DataColumn>
       <DataColumn name="省">
         <Property name="caption">省</Property>

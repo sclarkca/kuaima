@@ -127,6 +127,17 @@
       <PropertyDef name="merchantCode">
         <Property></Property>
       </PropertyDef>
+      <PropertyDef name="postStationName">
+        <Property/>
+        <Property name="label">驿站</Property>
+      </PropertyDef>
+      <PropertyDef name="buCode">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="buName">
+        <Property/>
+        <Property name="label">品类</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="Condition">
       <PropertyDef name="orderNo">
@@ -739,15 +750,24 @@ mainTab.set(&quot;currentTab&quot;,newTab);&#xD;
         <Property name="property">takeTime</Property>
         <Property name="align">center</Property>
       </DataColumn>
+      <DataColumn name="commodityName">
+        <Property name="property">commodityName</Property>
+      </DataColumn>
       <DataColumn name="商品编码">
         <Property name="caption">商品编码</Property>
         <Property name="property">sku</Property>
         <Property name="align">center</Property>
       </DataColumn>
+      <DataColumn name="buName">
+        <Property name="property">buName</Property>
+      </DataColumn>
       <DataColumn name="物流单号">
         <Property name="caption">物流单号</Property>
         <Property name="property">logisticsNo</Property>
         <Property name="align">center</Property>
+      </DataColumn>
+      <DataColumn name="postStationName">
+        <Property name="property">postStationName</Property>
       </DataColumn>
       <DataColumn name="驿站编码">
         <Property name="caption">驿站编码</Property>

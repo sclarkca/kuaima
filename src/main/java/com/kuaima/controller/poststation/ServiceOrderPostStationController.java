@@ -26,12 +26,19 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.dorado.data.provider.filter.FilterOperator;
 import com.bstek.dorado.view.resolver.ClientRunnableException;
+import com.kuaima.entity.Bu;
+import com.kuaima.entity.Commodity;
 import com.kuaima.entity.PostStation;
 import com.kuaima.entity.ServiceOrder;
+import com.kuaima.entity.WorkerInfo;
 import com.kuaima.entity.poststation.PostStationGrantedAuthority;
+import com.kuaima.service.BuService;
 import com.kuaima.service.CityService;
+import com.kuaima.service.CommodityService;
 import com.kuaima.service.EncodingTypeService;
+import com.kuaima.service.PostStationService;
 import com.kuaima.service.ServiceOrderService;
+import com.kuaima.service.WorkerInfoService;
 import com.kuaima.utils.common.MyCriteriaUtils;
 import com.kuaima.utils.common.MyDateUtil;
 
@@ -45,7 +52,14 @@ public class ServiceOrderPostStationController {
 	ServiceOrderService serviceOrderService;
 	@Autowired
 	EncodingTypeService encodingTypeService;
-
+	@Autowired
+	CommodityService commodityService;
+	@Autowired
+	PostStationService postStationService;
+	@Autowired
+	BuService buService;
+	@Autowired
+	WorkerInfoService workerInfoService;
 	/**
 	 * 增删改
 	 */
@@ -92,11 +106,39 @@ public class ServiceOrderPostStationController {
 		Collection<ServiceOrder> entities = page.getEntities();
 		for (ServiceOrder serviceOrder : entities) {
 			String province = serviceOrder.getProvince();
+			// 省
 			String provinceName = cityService.queryCityNameByAcCode(province);
 			String city = serviceOrder.getCity();
+			// 市
 			String cityName = cityService.queryCityNameByAcCode(city);
 			String region = serviceOrder.getRegion();
+			// 区镇
 			String regionName = cityService.queryCityNameByAcCode(region);
+			String sku = serviceOrder.getSku();
+			// 商品信息
+			Commodity commodity = commodityService.queryCmmdityByCode(sku);
+			if (null != commodity){
+				// 商品名称
+				serviceOrder.setCommodityName(commodity.getCommodityName());
+				String buCode = commodity.getBuCode();
+				// 品类信息
+				Bu bu = buService.queryBuName(buCode);
+				if (null != bu){
+					// 品类名称
+					serviceOrder.setBuName(bu.getBuName());
+				}
+			}
+			String workerId = serviceOrder.getWorkerId();
+			// 师傅姓名
+			if (StringUtils.isNotBlank(workerId)){
+				WorkerInfo workerInfo = workerInfoService.queryWorkerByCode(workerId);
+				if (null != workerInfo){
+					serviceOrder.setWorker(workerInfo.getCardName());
+				}
+			}
+			String postStationCode = serviceOrder.getPostStationCode();
+			String postStationName = postStationService.queryPostNameByCode(postStationCode);
+			serviceOrder.setPostStationName(postStationName);
 			serviceOrder.setProvinceName(provinceName);
 			serviceOrder.setCityName(cityName);
 			serviceOrder.setRegionName(regionName);

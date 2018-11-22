@@ -53,7 +53,7 @@ public class ServiceOrderRepository {
 		if (StringUtils.isNotBlank(postStationCode)){
 			sqlIf = "and o.post_station_code = "+"'"+postStationCode+"'";
 		}
-		String sql = "select o.order_no,o.receiver,o.receiver_phone,o.region,c.`name` as regionName,o.address from biz_service_order o left join biz_city c on o.region = c.ad_code where  (isnull(o.worker_id) or o.worker_id = '')"+sqlIf;
+		String sql = "select o.order_no,o.receiver,o.receiver_phone,o.region,c.`name` as regionName,o.address from biz_service_order o left join biz_city c on o.region = c.ad_code where  (isnull(o.worker_id) or o.worker_id = '') and o.order_status = '30' "+sqlIf;
 		List<ServiceOrder> list;
 		try {
 			list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ServiceOrder.class));

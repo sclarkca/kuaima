@@ -34,4 +34,26 @@ public class CommodityService {
 		List<Commodity> list = JpaUtil.linq(Commodity.class).equal("buCode", buCode).list();
 		return list;
 	}
+	
+	/**
+	 * 根据商品编码查询商品名称
+	 * @param sku
+	 * @return
+	 */
+	public String queryCmmdityNameByCode(String sku){
+		Commodity commodity = JpaUtil.linq(Commodity.class).equal("sku", sku).findOne();
+		String cmmdityName = null;
+		if (null != commodity){
+			cmmdityName = commodity.getCommodityName();
+		}
+		return cmmdityName;
+	}
+	/**
+	 * 根据商品编码查询商品信息
+	 * @param sku
+	 * @return
+	 */
+	public Commodity queryCmmdityByCode(String sku){
+		return JpaUtil.linq(Commodity.class).equal("sku", sku).findOne();
+	}
 }
