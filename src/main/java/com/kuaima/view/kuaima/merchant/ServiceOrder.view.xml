@@ -30,6 +30,12 @@
       <PropertyDef name="receiverPhone">
         <Property name="dataType">String</Property>
         <Property name="label">收货手机</Property>
+        <Validator name="validator1" type="regExp">
+          <Property name="resultMessage">您输入的手机格式不正确,请确认后重新输入!</Property>
+          <Property name="defaultResultState">warn</Property>
+          <Property name="validateMode">whiteBlack</Property>
+          <Property name="whiteRegExp">/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/</Property>
+        </Validator>
       </PropertyDef>
       <PropertyDef name="province">
         <Property name="dataType">String</Property>
@@ -133,11 +139,11 @@
         <Property></Property>
       </PropertyDef>
       <PropertyDef name="buCode">
-        <Property/>
+        <Property></Property>
         <Property name="label">品类编码</Property>
       </PropertyDef>
       <PropertyDef name="buName">
-        <Property/>
+        <Property></Property>
         <Property name="label">品类</Property>
       </PropertyDef>
     </DataType>
@@ -592,10 +598,10 @@
         <Property name="dataType">Integer</Property>
       </PropertyDef>
       <PropertyDef name="buCode">
-        <Property/>
+        <Property></Property>
       </PropertyDef>
       <PropertyDef name="buName">
-        <Property/>
+        <Property></Property>
       </PropertyDef>
     </DataType>
   </Model>
@@ -604,7 +610,7 @@
     <Property name="title">订单信息信息维护</Property>
     <DataSet id="dsServiceOrder">
       <Property name="dataProvider">serviceOrderController#query</Property>
-      <Property name="pageSize">20</Property>
+      <Property name="pageSize">10</Property>
       <Property name="dataType">[ServiceOrder]</Property>
       <Property name="loadMode">lazy</Property>
     </DataSet>
@@ -646,6 +652,8 @@
       <AutoFormElement>
         <Property name="name">sku</Property>
         <Property name="label">商品编码</Property>
+        <Property name="visible">false</Property>
+        <Property name="hideMode">display</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
@@ -681,11 +689,6 @@
       <AutoFormElement>
         <Property name="name">logisticsNo</Property>
         <Property name="label">物流单号</Property>
-        <Editor/>
-      </AutoFormElement>
-      <AutoFormElement>
-        <Property name="name">postStationCode</Property>
-        <Property name="label">驿站编码</Property>
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
@@ -754,6 +757,11 @@ if(data.current){&#xD;
 view.id(&quot;dialogModifyServiceOrder2&quot;).show();&#xD;
 var serviceOrder = data.current.getData();&#xD;
 var sku = serviceOrder.sku;&#xD;
+var orderStatus = serviceOrder.orderStatus;&#xD;
+if (orderStatus != '10'){&#xD;
+	dorado.MessageBox.alert(&quot;当前订单状态不可修改!&quot;);&#xD;
+	return;&#xD;
+};&#xD;
 var parameter = {&#xD;
 	&quot;sku&quot;:sku&#xD;
 };&#xD;
@@ -838,6 +846,11 @@ window.location.href=&quot;/village/serviceOrderFail&quot;; </ClientEvent>
         <ClientEvent name="onClick">var deleteAction = view.get(&quot;#deleteAction&quot;);&#xD;
 var current = view.get(&quot;#dgServiceOrder&quot;).getCurrentItem();&#xD;
 var id = current.getData().id;&#xD;
+var orderStatus = current.getData().orderStatus;&#xD;
+if (orderStatus != '10'){&#xD;
+	dorado.MessageBox.alert(&quot;当前订单状态不可取消!&quot;);&#xD;
+	return;&#xD;
+};&#xD;
 var parameter = {&#xD;
     &quot;id&quot;: id&#xD;
 };&#xD;
@@ -879,7 +892,6 @@ if (currentData){&#xD;
       <Property name="scrollMode">lazyRender</Property>
       <Property name="stretchColumnsMode">auto</Property>
       <Property name="dynaRowHeight">true</Property>
-      <RowSelectorColumn/>
       <RowNumColumn/>
       <DataColumn name="定单编码">
         <Property name="caption">定单编码</Property>
@@ -1030,35 +1042,39 @@ var provinceName = entity.get(&quot;provinceName&quot;);&#xD;
 var cityName = entity.get(&quot;cityName&quot;);&#xD;
 var regionName = entity.get(&quot;regionName&quot;);&#xD;
 var address = entity.get(&quot;address&quot;);&#xD;
+var re = /^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/;&#xD;
 if (!sku) {&#xD;
     dorado.MessageBox.alert('请选择商品');&#xD;
 }else &#xD;
     if (!receiver || !receiverPhone) {&#xD;
         dorado.MessageBox.alert('请填写收货人信息');&#xD;
     }    else &#xD;
-        if (!cityName || !regionName || !address) {&#xD;
-            dorado.MessageBox.alert('请填写收货人地址信息');&#xD;
-        }        else {&#xD;
-            var parameter = {&#xD;
-                serviceOrder: entity&#xD;
-            };&#xD;
-            var feeAction = view.get(&quot;#feeAction&quot;);&#xD;
-            var orderForm = view.get(&quot;#orderInfoForm.entity&quot;);&#xD;
-            var postForm = view.get(&quot;#postForm.entity&quot;);&#xD;
-            feeAction.set(&quot;parameter&quot;,parameter).execute(function(result){&#xD;
-                console.log(result);&#xD;
-                var postStation = result.postStation;&#xD;
-                var merchantOrderInfo = result.merchantOrderInfo;&#xD;
-                if (merchantOrderInfo || postStation) {&#xD;
-					var dsMerchantOrderInfo = view.get(&quot;#dsMerchantOrderInfo&quot;);&#xD;
-					var dsPostStation = view.get(&quot;#dsPostStation&quot;);&#xD;
-					dsMerchantOrderInfo.setData(merchantOrderInfo);&#xD;
-					dsPostStation.setData(postStation);&#xD;
-					var saveButton = view.get(&quot;#saveButton&quot;);&#xD;
-					saveButton.set(&quot;disabled&quot;,false);&#xD;
-                }            });&#xD;
-            &#xD;
-        }        &#xD;
+        if (!re.test(receiverPhone)) {&#xD;
+        	dorado.MessageBox.alert('您输入的手机格式不正确,请确认后重新输入!');&#xD;
+        }        else &#xD;
+            if (!cityName || !regionName || !address) {&#xD;
+                dorado.MessageBox.alert('请填写收货人地址信息');&#xD;
+            }            else {&#xD;
+                var parameter = {&#xD;
+                    serviceOrder: entity&#xD;
+                };&#xD;
+                var feeAction = view.get(&quot;#feeAction&quot;);&#xD;
+                var orderForm = view.get(&quot;#orderInfoForm.entity&quot;);&#xD;
+                var postForm = view.get(&quot;#postForm.entity&quot;);&#xD;
+                feeAction.set(&quot;parameter&quot;,parameter).execute(function(result){&#xD;
+                    console.log(result);&#xD;
+                    var postStation = result.postStation;&#xD;
+                    var merchantOrderInfo = result.merchantOrderInfo;&#xD;
+                    if (merchantOrderInfo || postStation) {&#xD;
+                        var dsMerchantOrderInfo = view.get(&quot;#dsMerchantOrderInfo&quot;);&#xD;
+                        var dsPostStation = view.get(&quot;#dsPostStation&quot;);&#xD;
+                        dsMerchantOrderInfo.setData(merchantOrderInfo);&#xD;
+                        dsPostStation.setData(postStation);&#xD;
+                        var saveButton = view.get(&quot;#saveButton&quot;);&#xD;
+                        saveButton.set(&quot;disabled&quot;,false);&#xD;
+                    }                });&#xD;
+                &#xD;
+            }            &#xD;
 </ClientEvent>
           <Property name="caption">费用计算</Property>
           <Property name="iconClass">fa fa-check-circle</Property>
@@ -1073,36 +1089,37 @@ var provinceName = entity.get(&quot;provinceName&quot;);&#xD;
 var cityName = entity.get(&quot;cityName&quot;);&#xD;
 var regionName = entity.get(&quot;regionName&quot;);&#xD;
 var address = entity.get(&quot;address&quot;);&#xD;
+var re = /^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/;&#xD;
 if (!sku) {&#xD;
     dorado.MessageBox.alert('请选择商品');&#xD;
-}&#xD;
-else &#xD;
+}else &#xD;
     if (!receiver || !receiverPhone) {&#xD;
         dorado.MessageBox.alert('请填写收货人信息');&#xD;
-    }&#xD;
-    else &#xD;
-        if (!cityName || !regionName || !address) {&#xD;
-            dorado.MessageBox.alert('请填写收货人地址信息');&#xD;
-        }&#xD;
-        else {&#xD;
-			var merchantOrderInfo = view.get(&quot;#orderInfoForm.entity&quot;);&#xD;
-            var postStation = view.get(&quot;#postForm,entity&quot;);&#xD;
-			var parameter = {&#xD;
-				&quot;serviceOrder&quot;:entity,&#xD;
-				&quot;merchantOrderInfo&quot;:merchantOrderInfo&#xD;
-			};&#xD;
-            var action = view.id(&quot;createOrderAction&quot;);&#xD;
-            dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;, function(){&#xD;
-                action.set(&quot;parameter&quot;,parameter).execute(function(){&#xD;
-                    dialog.hide();&#xD;
-                    var dsMerchantOrderInfo = view.get(&quot;#dsMerchantOrderInfo&quot;);&#xD;
-                    var dsPostStation = view.get(&quot;#dsPostStation&quot;);&#xD;
-                    dsMerchantOrderInfo.clear();&#xD;
-                    dsPostStation.clear();&#xD;
-                    view.get(&quot;#dsServiceOrder&quot;).flushAsync();&#xD;
-                });&#xD;
-            })&#xD;
-        }&#xD;
+    }    else &#xD;
+        if (!re.test(receiverPhone)) {&#xD;
+            dorado.MessageBox.alert('您输入的手机格式不正确,请确认后重新输入!');&#xD;
+        }        else &#xD;
+            if (!cityName || !regionName || !address) {&#xD;
+                dorado.MessageBox.alert('请填写收货人地址信息');&#xD;
+            }            else {&#xD;
+                var merchantOrderInfo = view.get(&quot;#orderInfoForm.entity&quot;);&#xD;
+                var postStation = view.get(&quot;#postForm,entity&quot;);&#xD;
+                var parameter = {&#xD;
+                    &quot;serviceOrder&quot;: entity,&#xD;
+                    &quot;merchantOrderInfo&quot;: merchantOrderInfo&#xD;
+                };&#xD;
+                var action = view.id(&quot;createOrderAction&quot;);&#xD;
+                dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;,function(){&#xD;
+                    action.set(&quot;parameter&quot;,parameter).execute(function(){&#xD;
+                        dialog.hide();&#xD;
+                        var dsMerchantOrderInfo = view.get(&quot;#dsMerchantOrderInfo&quot;);&#xD;
+                        var dsPostStation = view.get(&quot;#dsPostStation&quot;);&#xD;
+                        dsMerchantOrderInfo.clear();&#xD;
+                        dsPostStation.clear();&#xD;
+                        view.get(&quot;#dsServiceOrder&quot;).flushAsync();&#xD;
+                    });&#xD;
+                })&#xD;
+            }            &#xD;
 </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="iconClass">fa fa-check-circle</Property>
@@ -1119,12 +1136,6 @@ else &#xD;
             <Property name="property">orderNo</Property>
             <Property name="label">定单编码</Property>
             <Property name="readOnly">true</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">buCode</Property>
-            <Property name="property">buCode</Property>
-            <Property name="trigger">ddBu</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -1282,11 +1293,6 @@ else &#xD;
           <AutoFormElement>
             <Property name="name">perKmAmount</Property>
             <Property name="property">perKmAmount</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">serviceCommdityAmount</Property>
-            <Property name="property">serviceCommdityAmount</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -1858,6 +1864,12 @@ if (!sku) {&#xD;
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
+            <Property name="name">buName</Property>
+            <Property name="property">buName</Property>
+            <Property name="trigger">ddBu</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
             <Property name="name">commodityName</Property>
             <Property name="property">commodityName</Property>
             <Property name="trigger">ddCommodity</Property>
@@ -1873,14 +1885,6 @@ if (!sku) {&#xD;
             <Property name="name">receiverPhone</Property>
             <Property name="property">receiverPhone</Property>
             <Property name="label">收货手机</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">provinceName</Property>
-            <Property name="property">provinceName</Property>
-            <Property name="label">省</Property>
-            <Property name="name">provinceName</Property>
-            <Property name="trigger">ddProvince1</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -2022,11 +2026,6 @@ if (!sku) {&#xD;
           <AutoFormElement>
             <Property name="name">perKmAmount</Property>
             <Property name="property">perKmAmount</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">serviceCommdityAmount</Property>
-            <Property name="property">serviceCommdityAmount</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -2177,15 +2176,15 @@ dorado.MessageBox.confirm(&quot;您真的要保存吗?&quot;,function(){&#xD;
           <Property name="createPrivateDataSet">true</Property>
           <Property name="dataType">LogisticsOrder</Property>
           <AutoFormElement>
-            <Property name="name">logisticsNo</Property>
-            <Property name="property">logisticsNo</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
             <Property name="name">logisticsName</Property>
             <Property name="property">logisticsName</Property>
             <Property name="trigger">ddWuliu</Property>
             <Property name="editable">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">logisticsNo</Property>
+            <Property name="property">logisticsNo</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
